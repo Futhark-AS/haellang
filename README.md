@@ -2,4 +2,6 @@
 ## The number one programming language for østfoldingær
 
 # Usage
-- '''python "If" == "Dersom atter" '''
+| Hællang Code | Python Interpretation |
+| ------------ | ----------- |
+| Dersom atter | if          |
