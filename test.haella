@@ -1,0 +1,4 @@
+x ære samma som 4.
+# x = 4
+dersom atter x er mere enn 2 så spøtt ut x ellers så ente gjør no åsså æru ferdig.
+#if          x > 2           then print(x) else      pass         end of ifthenelse     
