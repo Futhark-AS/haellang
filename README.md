@@ -4,4 +4,4 @@
 # Usage
 | Hællang Code | Python Interpretation |
 | ------------ | ----------- |
-| Dersom atter | if          |
+| dersom atter | if          |
