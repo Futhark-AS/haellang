@@ -14,6 +14,7 @@
 | spøtt ut                                         | print                 |
 | mere enn, småære enn, ære samma som              | >, <, =               |
 | plussær, minusær, delær, gangær                  | +, -, \*, /           |
+| startparangtes, endeparangtes                    | (, )                  |
 | ær prikk lik                                     | ==                    |
 | ente gjør no                                     | pass                  |
 | klart det                                        | true                  |
