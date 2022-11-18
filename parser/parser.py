@@ -19,7 +19,7 @@ reserved = {
 'så-lenge':'WHILE',
 'ta-åsså-gjør':'DO',
 'ellers-så':'END_OF_WHILE',
-'spøtt-utt':'PRINT',
+'spøtt-ut':'PRINT',
 'ente-gjør-no':'PASS',
 }
 
