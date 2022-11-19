@@ -1,8 +1,20 @@
-# Hællang
+# The Hællang Programming Language
 
-## The number one programming language for østfoldingær
+#### The number one programming language for østfoldingær
 
-# Semantics
+> # Installation
+
+1. Create a folder for the project
+2. In the terminal type `git clone https://github.com/Futhark-AS/haellang.git`
+3. Move into the folder and create a virtual environment with `python -m venv venv`
+4. Activate virtual environment
+   - For windows: `source venv/Scripts/activate`
+   - For mac: `source venv/bin/activate`
+5. Install requirements `pip install -r requirements.txt`
+
+###### Now you can you write a .haellae file in Hællang and run it using the command: `python haellang.py path-to-file/file.haellae`
+
+> # Semantics
 
 | Hællang Code                                        | Python Interpretation                                      |
 | --------------------------------------------------- | ---------------------------------------------------------- |
@@ -21,45 +33,51 @@
 | klart det                                           | TRUE                                                       |
 | ente rekti                                          | FALSE                                                      |
 
-##### Example Code
+> ##### Example Code
 
-```python
-x ære samma som 4.
-# x = 4
-dersom atter x er mere enn 2
-så spøtt ut x ellers så
-ente gjør no åsså æru ferdig.
-# if x > 2
-# then print(x)
-# else pass
-# end of if-then-else
+```
+n ære samma som 2.
+imens n småære enn 100 ta åsså gjør
+    p ære samma som klart det.
+    d ære samma som 2.
+    imens d småære enn n delær 2 plussær 1 ta åsså gjør
+        dersom atter
+            hællæ n mådda med d prekæs er prikk lik 0
+        så
+            p ære samma som ente rekti.
+            gi dæ.
+        ellers så
+            ente gjør no,
+        åsså æru ferdig.
+        d ære samma som d plussær 1.
+    åsså gjøru det igjen.
+    dersom atter
+        p
+    så
+        spøtt ut n.
+    ellers så
+        ente gjør no.
+    åsså æru ferdig.
+    n ære samma som n plussær 1.
+åsså gjøru det igjen.
 ```
 
-<statement> :=
-| <statement><statement>
-| dersom atter <expression> så <statement> ellers så <statement> åsså æru ferdig.
-| <variable> ære samma som <expression>.
-| gi dæ.
-| så lenge <expression> ta åsså gjør <statement> åsså gjøru det igjen.
-| spøtt utt <expression>.
-| ente gjør no.
-
-<expression> :=
-| <expression> ær prikk lik <expression>
-| <expression> mere enn <expression>
-| <expression> småære enn <expression>
-| <expression> plussær <expression>
-| <expression> minusær <expression>
-| <expression> delær <expression>
-| <expression> gangær <expression>
-| hællæ <expression> prekæs
-| <number>
-| <bool>
-
-<number> := -[0-9]+
-
-<bool> :=
-| klart det
-| ente rekti
-
-<variable> := [a-z A-Z][a-z a-z 0-9 _]\*
+```python
+n = 2
+while n < 100:
+  p = True
+  d = 2
+  while d < n / 2 + 1:
+      if (n % d) == 0:
+          p = False
+          break
+      else:
+          pass
+      d = d + 1
+  if p:
+      print(n)
+  else:
+      pass
+  n = n + 1
+# Prints all prime numbers from 1 to 100
+```
