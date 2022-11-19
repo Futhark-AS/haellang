@@ -20,7 +20,6 @@
 | ente gjør no                                        | PASS                                                       |
 | klart det                                           | TRUE                                                       |
 | ente rekti                                          | FALSE                                                      |
-| ente rekti                                          | FALSE                                                      |
 
 ##### Example Code
 
