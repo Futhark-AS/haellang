@@ -1,24 +1,24 @@
-n ære-samma-som 2.
-så-lenge n småære-enn 100 ta-åsså-gjør 
-    p ære-samma-som klart-det.
-    d ære-samma-som 2.
-    så-lenge d småære-enn n delær 2 plussær 1 ta-åsså-gjør 
-        dersom-atter 
-            hællæ n mådda-med d prekæs er-prikk-lik 0
+n ære samma som 2.
+imens n småære enn 100 ta åsså gjør 
+    p ære samma som klart det.
+    d ære samma som 2.
+    imens d småære enn n delær 2 plussær 1 ta åsså gjør 
+        dersom atter 
+            hællæ n mådda med d prekæs er prikk lik 0
         så 
-            p ære-samma-som ente-rekti.
-            gi-dæ.
-        ellers-så 
-            ente-gjør-no,
-        åsså-æru-ferdig.
-        d ære-samma-som d plussær 1.
-    åsså-gjøru-det-igjen.
-    dersom-atter 
+            p ære samma som ente rekti.
+            gi dæ.
+        ellers så 
+            ente gjør no,
+        åsså æru ferdig.
+        d ære samma som d plussær 1.
+    åsså gjøru det igjen.
+    dersom atter 
         p 
     så 
-        spøtt-ut n. 
-    ellers-så
-        ente-gjør-no.
-    åsså-æru-ferdig.
-    n ære-samma-som n plussær 1.
-åsså-gjøru-det-igjen. 
+        spøtt ut n. 
+    ellers så
+        ente gjør no.
+    åsså æru ferdig.
+    n ære samma som n plussær 1.
+åsså gjøru det igjen. 

@@ -17,9 +17,9 @@ reserved = {
     'dersom-atter':'IF',
     'så':'THEN',
     'ente-gjør-no':'PASS',
-    'ellers-så':'ELSE',
+    'ellers':'ELSE',
     'åsså-æru-ferdig':'END_OF_IF_THEN_ELSE',
-    'så-lenge':'WHILE', #Switch to 'imens'?
+    'imens':'WHILE', 
     'ta-åsså-gjør':'DO',
     'åsså-gjøru-det-igjen':'END_OF_WHILE',
     'spøtt-ut':'PRINT',
@@ -109,8 +109,8 @@ def p_statement_recursive(p):
     p[0] = ('recursive-statement', p[1], p[2])
 
 def p_statement_if(p):
-    'statement : IF expression THEN statement ELSE statement END_OF_IF_THEN_ELSE END_OF_STATEMENT'
-    p[0] = ('if-statement', p[2], p[4], p[6])
+    'statement : IF expression THEN statement ELSE THEN statement END_OF_IF_THEN_ELSE END_OF_STATEMENT'
+    p[0] = ('if-statement', p[2], p[4], p[7])
 
 def p_statement_assign(p):
     'statement : NAME EQUALS expression END_OF_STATEMENT'
@@ -139,7 +139,6 @@ def p_error(p):
         print('Unexpected end of input')
         
 # Error rule for syntax errors
-
 # Build the parser
 parser = yacc.yacc(start='statement', debug=True)
 # pprint.pprint(out)
