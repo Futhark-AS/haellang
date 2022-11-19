@@ -4,21 +4,23 @@
 
 # Semantics
 
-| Hællang Code                                     | Python Interpretation |
-| ------------------------------------------------ | --------------------- |
-| dersom atter, ellers                             | if, else              |
-| gi dæ                                            | break                 |
-| dra tebake deru kom fra                          | end of function       |
-| ta meræ                                          | return                |
-| så lenge .. ta åsså gjør .. åsså gjøru det igjen | while                 |
-| spøtt ut                                         | print                 |
-| mere enn, småære enn, ære samma som              | >, <, =               |
-| plussær, minusær, delær, gangær                  | +, -, \*, /           |
-| startparrangtes, endeparrangtes                  | (, )                  |
-| ær prikk lik                                     | ==                    |
-| ente gjør no                                     | pass                  |
-| klart det                                        | true                  |
-| ente rekti                                       | false                 |
+| Hællang Code                                     | Python Interpretation                                      |
+| ------------------------------------------------ | ---------------------------------------------------------- |
+| .                                                | END_OF_STATEMENT                                           |
+| dersom atter .. så ellers så .. åsså æru ferdig. | IF .. THEN .. ELSE THEN .. END_OF_IF_ELSE END_OF_STATEMENT |
+| gi dæ                                            | BREAK                                                      |
+| dra tebake deru kom fra                          | END_OF_FUNCTION                                            |
+| ta meræ                                          | RETURN                                                     |
+| imens .. ta åsså gjør .. åsså gjøru det igjen    | WHILE .. DO .. END_OF_WHILE                                |
+| spøtt ut                                         | PRINT                                                      |
+| mere enn, småære enn, ære samma som              | GT, LT, EQUALS                                             |
+| plussær, minusær, delær, gangær, mådda med       | PLUS, MINUS, TIMES, DIVIDE, MOD                            |
+| hællæ, prekæs                                    | LPAREN, RPAREN                                             |
+| ær prikk lik                                     | EQ                                                         |
+| ente gjør no                                     | PASS                                                       |
+| klart det                                        | TRUE                                                       |
+| ente rekti                                       | FALSE                                                      |
+| ente rekti                                       | FALSE                                                      |
 
 ##### Example Code
 
