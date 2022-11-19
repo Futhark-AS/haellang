@@ -1,5 +1,9 @@
 import operator
 
+statement_return_codes = set(
+    'BREAK',
+)
+
 def interpret(ast):
     """ Executes an abstract syntax tree
 
@@ -16,15 +20,25 @@ def interpret(ast):
     def interpret_internal(ast, assignment_store):
         match ast[0]:
             case 'recursive-statement':
-                interpret_internal(ast[1], assignment_store)
-                interpret_internal(ast[2], assignment_store)
+                for i in range(2):
+                    code = interpret_internal(ast[i+1], assignment_store)
+                    match code:
+                        case 'BREAK':
+                            return 'BREAK'
+                        case _:
+                            pass
             case 'assign-statement':
                 assignment_store[ast[1]] = interpret_internal(ast[2], assignment_store)
             case 'if-statement':
                 if (interpret_internal(ast[1], assignment_store)):
-                    interpret_internal(ast[2], assignment_store)
+                    code = interpret_internal(ast[2], assignment_store)
                 else:
-                    interpret_internal(ast[3], assignment_store)
+                    code = interpret_internal(ast[3], assignment_store)
+                match code:
+                    case 'BREAK':
+                        return 'BREAK'
+                    case _:
+                        pass
             case 'binary-expression': 
                 op = None
                 match ast[1]:
@@ -55,6 +69,16 @@ def interpret(ast):
                 print(interpret_internal(ast[1], assignment_store))
             case 'pass-statement':
                 pass
+            case 'while-statement':
+                while interpret_internal(ast[1], assignment_store):
+                    code = interpret_internal(ast[2], assignment_store)
+                    match code:
+                        case 'BREAK':
+                            break
+                        case _:
+                            pass
+            case 'break-statement':
+                return 'BREAK'
             case _:
                 raise('Illegal AST Node')
 

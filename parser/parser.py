@@ -82,10 +82,22 @@ data4 = '''
     så spøtt-ut y, ellers-så
     spøtt-ut x, åsså-æru-ferdig.
 '''
+data5 = '''
+    i ære-samma-som 0.
+    så-lenge i småære-enn 10 
+    ta-åsså-gjør 
+    i ære-samma-som i plussær 1.
+    dersom-atter i gangær i mere-enn 20
+    så gi-dæ,
+    ellers-så ente-gjør-no,
+    åsså-æru-ferdig.
+    spøtt-ut i. 
+    åsså-gjøru-det-igjen.
+'''
 
-#lexer.input(data2)
-#for tok in lexer:
-    #print(tok)
+lexer.input(data5)
+for tok in lexer:
+    print(tok)
 
 precedence = (
     ('nonassoc', 'LT', 'GT', 'EQ'),  # Nonassociative operators
@@ -161,7 +173,7 @@ def p_error(p):
     
 # Build the parser
 parser = yacc.yacc(start='statement')
-out = parser.parse(data4)
+out = parser.parse(data5)
 pprint.pprint(out)
 
 from interpreter import interpret
