@@ -32,7 +32,7 @@ reserved = {
 #print(reserved)
 
 tokens = [ 
-    'NAME','NUMBER',
+    'NAME','NUMBER', 'STRING',
     'END_OF_STATEMENT',
 ] + list(set(reserved.values()))
 
@@ -53,6 +53,11 @@ def t_NAME(t):
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)    
+    return t
+
+def t_STRING(t):
+    r'"[\s\w\d\S\W\D]*"'
+    t.value = t.value[1:-1]
     return t
 
 def t_error(t):
@@ -122,7 +127,12 @@ data6 = '''
     åsså-gjøru-det-igjen.
 '''
 
-lexer.input(data6)
+data7 = '''
+    x ære-samma-som "Hællæ åssen gåre meræ da 1234"4 !!?#:$¤"'#.'..,, | '".
+    spøtt-ut x.
+'''
+
+lexer.input(data7)
 for tok in lexer:
     print(tok)
 
@@ -152,6 +162,10 @@ def p_expression_group(p):
 def p_expression_number(p):
     '''expression : NUMBER'''
     p[0] = ('literal-expression',p[1])
+
+def p_expression_string(p):
+    '''expression : STRING'''
+    p[0] = ('literal-expression', p[1])
 
 def p_expression_true(p):
     '''expression : TRUE'''
@@ -201,7 +215,7 @@ def p_error(p):
     
 # Build the parser
 parser = yacc.yacc(start='statement')
-out = parser.parse(data6)
+out = parser.parse(data7)
 pprint.pprint(out)
 
 from interpreter import interpret
