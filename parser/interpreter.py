@@ -56,6 +56,8 @@ def interpret(ast):
                         op = operator.mul
                     case 'DIVIDE':
                         op = operator.floordiv
+                    case 'MOD':
+                        op = operator.mod
                     case _ : 
                         raise('Illegal binary expression type')
                 return op(interpret_internal(ast[2], assignment_store), interpret_internal(ast[3], assignment_store))

@@ -8,12 +8,13 @@ reserved = {
     'minusær':'MINUS',
     'gangær':'TIMES',
     'delær':'DIVIDE',
+    'mådda-med':'MOD',
     'ære-samma-som':'EQUALS',
     'hællæ':'LPAREN',
     'prekæs':'RPAREN',
     'småære-enn':'LT',
     'mere-enn':'GT',
-    'ære-samme-som':'EQ',
+    'er-prikk-lik':'EQ',
     'dersom-atter':'IF',
     'så':'THEN',
     'ente-gjør-no':'PASS',
@@ -94,8 +95,34 @@ data5 = '''
     spøtt-ut i. 
     åsså-gjøru-det-igjen.
 '''
+data6 = '''
+    n ære-samma-som 2.
+    så-lenge n småære-enn 100 ta-åsså-gjør 
+        p ære-samma-som klart-det.
+        d ære-samma-som 2.
+        så-lenge d småære-enn n delær 2 plussær 1 ta-åsså-gjør 
+            dersom-atter 
+                hællæ n mådda-med d prekæs er-prikk-lik 0
+            så 
+                p ære-samma-som ente-rekti.
+                gi-dæ.
+            ellers-så 
+                ente-gjør-no,
+            åsså-æru-ferdig.
+            d ære-samma-som d plussær 1.
+        åsså-gjøru-det-igjen.
+        dersom-atter 
+            p 
+        så 
+            spøtt-ut n. 
+        ellers-så
+            ente-gjør-no.
+        åsså-æru-ferdig.
+        n ære-samma-som n plussær 1.
+    åsså-gjøru-det-igjen.
+'''
 
-lexer.input(data5)
+lexer.input(data6)
 for tok in lexer:
     print(tok)
 
@@ -111,6 +138,7 @@ def p_expression_binop(p):
                 | expression MINUS expression
                 | expression TIMES expression
                 | expression DIVIDE expression
+                | expression MOD expression
                 | expression GT expression
                 | expression LT expression
                 | expression EQ expression'''
@@ -173,7 +201,7 @@ def p_error(p):
     
 # Build the parser
 parser = yacc.yacc(start='statement')
-out = parser.parse(data5)
+out = parser.parse(data6)
 pprint.pprint(out)
 
 from interpreter import interpret
