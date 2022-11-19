@@ -19,7 +19,7 @@ hyphenMap = {
     'gi dæ':'gi-dæ'
 }
 
-def addHyphens(script):
+def addHyphens(script, hyphenMap):
     for key, value in hyphenMap.items():
         script = script.replace(key, value)
     print(script)
@@ -32,7 +32,7 @@ def main(args):
     if(not os.path.exists(filename)):
         raise FileNotFoundError("Invalid path or file does not exist")
     script = open(filename).read()
-    script = addHyphens(script)
+    script = addHyphens(script, hyphenMap)
     parsed_script = parse(script)
     if(parsed_script == None):
         raise SyntaxError("Invalid input")
