@@ -29,7 +29,7 @@ reserved = {
 }
 
 tokens = [ 
-    'NAME','NUMBER', 'STRING',
+    'NAME','NUMBER', 'STRING', 'FLOAT',
     'END_OF_STATEMENT',
 ] + list(set(reserved.values()))
 
@@ -42,6 +42,12 @@ def t_ID(t):
 
 def t_NAME(t):
     r'[a-zA-ZæøåÆØÅ_][a-zA-ZæøåÆØÅ0-9_]*'
+    return t
+
+def t_FLOAT(t):
+    r'\d+.\d+'
+    print(t)
+    t.value = float(t.value)
     return t
 
 def t_NUMBER(t):
@@ -90,6 +96,10 @@ def p_expression_number(p):
 
 def p_expression_string(p):
     '''expression : STRING'''
+    p[0] = ('literal-expression', p[1])
+    
+def p_expression_float(p):
+    '''expression : FLOAT'''
     p[0] = ('literal-expression', p[1])
 
 def p_expression_true(p):
