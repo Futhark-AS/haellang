@@ -1,4 +1,4 @@
-import sys, os, pprint
+import sys, os, io
 from parser.parser import parse
 from interpreter.interpreter import interpret
 
@@ -22,7 +22,6 @@ hyphenMap = {
 def addHyphens(script, hyphenMap):
     for key, value in hyphenMap.items():
         script = script.replace(key, value)
-    print(script)
     return script
 
 def main(args):
@@ -31,7 +30,7 @@ def main(args):
     filename = args[0]
     if(not os.path.exists(filename)):
         raise FileNotFoundError("Invalid path or file does not exist")
-    script = open(filename).read()
+    script = io.open(filename, mode="r", encoding="utf-8").read()
     script = addHyphens(script, hyphenMap)
     parsed_script = parse(script)
     if(parsed_script == None):

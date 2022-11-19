@@ -12,7 +12,7 @@
    - For mac: `source venv/bin/activate`
 5. Install requirements `pip install -r requirements.txt`
 
-###### Now you can you write a .haellae file in Hællang and run it using the command: `python haellang.py path-to-file/file.haellae`
+Now you can you write a .haellae file in Hællang and run it using the command: `python haellang.py path-to-file/file.haellae`
 
 > # Semantics
 
