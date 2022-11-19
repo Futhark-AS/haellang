@@ -1,6 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
 import re
+import pprint
 
 reserved = {
     'plussær':'PLUS',
@@ -22,8 +23,8 @@ reserved = {
     'ta-åsså-gjør':'DO',
     'åsså-gjøru-det-igjen':'END_OF_WHILE',
     'spøtt-ut':'PRINT',
-    'klart-det':'BOOL',
-    'ente-rekti':'BOOL',
+    'klart-det':'TRUE',
+    'ente-rekti':'FALSE',
     'gi-dæ':'BREAK',
 }
 
@@ -74,6 +75,13 @@ data3 = '''
     x ære-samma-som 4.
     y ære-samma-som x plussær 5.
 '''
+data4 = '''
+    x ære-samma-som 4.
+    y ære-samma-som hællæ 1 plussær x prekæs gangær 2.
+    dersom-atter x plussær y mere-enn 11
+    så spøtt-ut y, ellers-så
+    spøtt-ut x, åsså-æru-ferdig.
+'''
 
 #lexer.input(data2)
 #for tok in lexer:
@@ -95,16 +103,23 @@ def p_expression_binop(p):
                 | expression LT expression
                 | expression EQ expression'''
 
-    p[0] = ('binary-expression',p[2],p[1],p[3])
+    p[0] = ('binary-expression',reserved[p[2]],p[1],p[3])
 
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
     p[0] = ('group-expression',p[2])
 
-def p_expression_literal(p):
-    '''expression : NUMBER
-                | BOOL'''
+def p_expression_number(p):
+    '''expression : NUMBER'''
     p[0] = ('literal-expression',p[1])
+
+def p_expression_true(p):
+    '''expression : TRUE'''
+    p[0] = ('literal-expression', True)
+
+def p_expression_false(p):
+    '''expression : FALSE'''
+    p[0] = ('literal-expression', False)
     
 def p_expression_variable(p):
     '''expression : NAME'''
@@ -146,6 +161,9 @@ def p_error(p):
     
 # Build the parser
 parser = yacc.yacc(start='statement')
-out = parser.parse(data1)
-print(out)
+out = parser.parse(data4)
+pprint.pprint(out)
+
+from interpreter import interpret
+interpret(out)
  
