@@ -4,23 +4,23 @@
 
 # Semantics
 
-| Hællang Code                                     | Python Interpretation                                      |
-| ------------------------------------------------ | ---------------------------------------------------------- |
-| .                                                | END_OF_STATEMENT                                           |
-| dersom atter .. så ellers så .. åsså æru ferdig. | IF .. THEN .. ELSE THEN .. END_OF_IF_ELSE END_OF_STATEMENT |
-| gi dæ                                            | BREAK                                                      |
-| dra tebake deru kom fra                          | END_OF_FUNCTION                                            |
-| ta meræ                                          | RETURN                                                     |
-| imens .. ta åsså gjør .. åsså gjøru det igjen    | WHILE .. DO .. END_OF_WHILE                                |
-| spøtt ut                                         | PRINT                                                      |
-| mere enn, småære enn, ære samma som              | GT, LT, EQUALS                                             |
-| plussær, minusær, delær, gangær, mådda med       | PLUS, MINUS, TIMES, DIVIDE, MOD                            |
-| hællæ, prekæs                                    | LPAREN, RPAREN                                             |
-| ær prikk lik                                     | EQ                                                         |
-| ente gjør no                                     | PASS                                                       |
-| klart det                                        | TRUE                                                       |
-| ente rekti                                       | FALSE                                                      |
-| ente rekti                                       | FALSE                                                      |
+| Hællang Code                                        | Python Interpretation                                      |
+| --------------------------------------------------- | ---------------------------------------------------------- |
+| .                                                   | END_OF_STATEMENT                                           |
+| dersom atter .. så .. ellers så .. åsså æru ferdig. | IF .. THEN .. ELSE THEN .. END_OF_IF_ELSE END_OF_STATEMENT |
+| gi dæ                                               | BREAK                                                      |
+| dra tebake deru kom fra                             | END_OF_FUNCTION                                            |
+| ta meræ                                             | RETURN                                                     |
+| imens .. ta åsså gjør .. åsså gjøru det igjen       | WHILE .. DO .. END_OF_WHILE                                |
+| spøtt ut                                            | PRINT                                                      |
+| mere enn, småære enn, ære samma som                 | GT, LT, EQUALS                                             |
+| plussær, minusær, delær, gangær, mådda med          | PLUS, MINUS, TIMES, DIVIDE, MOD                            |
+| hællæ, prekæs                                       | LPAREN, RPAREN                                             |
+| ær prikk lik                                        | EQ                                                         |
+| ente gjør no                                        | PASS                                                       |
+| klart det                                           | TRUE                                                       |
+| ente rekti                                          | FALSE                                                      |
+| ente rekti                                          | FALSE                                                      |
 
 ##### Example Code
 
