@@ -1,33 +1,41 @@
 import ply.lex as lex
+import ply.yacc as yacc
 import re
 
 reserved = {
-'plussær':'PLUS',
-'minusær':'MINUS',
-'gangær':'TIMES',
-'delær':'DIVIDE',
-'ære-samma-som':'EQUALS',
-'hællæ':'LPAREN',
-'prekæs':'RPAREN',
-'småære-enn':'LT',
-'mere-enn':'GT',
-'ære-samme-som':'EQ',
-'dersom-atter':'IF',
-'så':'THEN',
-'ellers-så':'ELSE',
-'åsså-æru-ferdig':'END_OF_IF_THEN_ELSE',
-'så-lenge':'WHILE',
-'ta-åsså-gjør':'DO',
-'ellers-så':'END_OF_WHILE',
-'spøtt-ut':'PRINT',
-'ente-gjør-no':'PASS',
+    'plussær':'PLUS',
+    'minusær':'MINUS',
+    'gangær':'TIMES',
+    'delær':'DIVIDE',
+    'ære-samma-som':'EQUALS',
+    'hællæ':'LPAREN',
+    'prekæs':'RPAREN',
+    'småære-enn':'LT',
+    'mere-enn':'GT',
+    'ære-samme-som':'EQ',
+    'dersom-atter':'IF',
+    'så':'THEN',
+    'ente-gjør-no':'PASS',
+    'ellers-så':'ELSE',
+    'åsså-æru-ferdig':'END_OF_IF_THEN_ELSE',
+    'så-lenge':'WHILE',
+    'ta-åsså-gjør':'DO',
+    'åsså-gjøru-det-igjen':'END_OF_WHILE',
+    'spøtt-ut':'PRINT',
+    'klart-det':'BOOL',
+    'ente-rekti':'BOOL',
+    'gi-dæ':'BREAK',
 }
+
+#print(reserved)
 
 tokens = [ 
     'NAME','NUMBER',
     'END_OF_STATEMENT',
-    'ID',
-] + list(reserved.values())
+] + list(set(reserved.values()))
+
+#print(reserved.values())
+#print(tokens)
 
 t_END_OF_STATEMENT = r'[.,]'
 
@@ -60,9 +68,84 @@ data1 = '''
     ente-gjør-no, åsså-æru-ferdig.
 '''
 data2 = '''
-    x plussær 4.
+    x ære-samma-som 4.
+'''
+data3 = '''
+    x ære-samma-som 4.
+    y ære-samma-som x plussær 5.
 '''
 
-lexer.input(data1)
-for tok in lexer:
-    print(tok)
+#lexer.input(data2)
+#for tok in lexer:
+    #print(tok)
+
+precedence = (
+    ('nonassoc', 'LT', 'GT', 'EQ'),  # Nonassociative operators
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE'),
+    # ('right', 'UMINUS'),            # Unary minus operator
+)
+
+def p_expression_binop(p):
+    '''expression : expression PLUS expression
+                | expression MINUS expression
+                | expression TIMES expression
+                | expression DIVIDE expression
+                | expression GT expression
+                | expression LT expression
+                | expression EQ expression'''
+
+    p[0] = ('binary-expression',p[2],p[1],p[3])
+
+def p_expression_group(p):
+    'expression : LPAREN expression RPAREN'
+    p[0] = ('group-expression',p[2])
+
+def p_expression_literal(p):
+    '''expression : NUMBER
+                | BOOL'''
+    p[0] = ('literal-expression',p[1])
+    
+def p_expression_variable(p):
+    '''expression : NAME'''
+    p[0] = ('variable-expression',p[1])
+
+def p_statement_recursive(p):
+    'statement : statement statement'
+    p[0] = ('recursive-statement', p[1], p[2])
+
+def p_statement_if(p):
+    'statement : IF expression THEN statement ELSE statement END_OF_IF_THEN_ELSE END_OF_STATEMENT'
+    p[0] = ('if-statement', p[2], p[4], p[6])
+
+def p_statement_assign(p):
+    'statement : NAME EQUALS expression END_OF_STATEMENT'
+    p[0] = ('assign-statement', p[1], p[3])
+
+def p_statement_break(p):
+    'statement : BREAK END_OF_STATEMENT'
+    p[0] = ('break-statement',)
+
+def p_statement_while(p):
+    'statement : WHILE expression DO statement END_OF_WHILE END_OF_STATEMENT'
+    p[0] = ('while-statement', p[2], p[4])
+    
+def p_statement_print(p):
+    'statement : PRINT expression END_OF_STATEMENT'
+    p[0] = ('print-statement', p[2])
+
+def p_statement_pass(p):
+    'statement : PASS END_OF_STATEMENT'
+    p[0] = ('pass-statement',)
+    
+def p_error(p):
+    print("Syntax Error in Input!")
+    
+ 
+# Error rule for syntax errors
+    
+# Build the parser
+parser = yacc.yacc(start='statement')
+out = parser.parse(data1)
+print(out)
+ 
