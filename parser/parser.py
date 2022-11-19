@@ -1,7 +1,6 @@
 import ply.lex as lex
 import ply.yacc as yacc
 import re
-import pprint
 
 reserved = {
     'plussær':'PLUS',
@@ -20,7 +19,7 @@ reserved = {
     'ente-gjør-no':'PASS',
     'ellers-så':'ELSE',
     'åsså-æru-ferdig':'END_OF_IF_THEN_ELSE',
-    'så-lenge':'WHILE',
+    'så-lenge':'WHILE', #Switch to 'imens'?
     'ta-åsså-gjør':'DO',
     'åsså-gjøru-det-igjen':'END_OF_WHILE',
     'spøtt-ut':'PRINT',
@@ -29,15 +28,10 @@ reserved = {
     'gi-dæ':'BREAK',
 }
 
-#print(reserved)
-
 tokens = [ 
     'NAME','NUMBER', 'STRING',
     'END_OF_STATEMENT',
 ] + list(set(reserved.values()))
-
-#print(reserved.values())
-#print(tokens)
 
 t_END_OF_STATEMENT = r'[.,]'
 
@@ -56,7 +50,7 @@ def t_NUMBER(t):
     return t
 
 def t_STRING(t):
-    r'"[\s\w\d\S\W\D]*"'
+    r'\"[^\"]*\"'
     t.value = t.value[1:-1]
     return t
 
@@ -68,79 +62,10 @@ t_ignore = ' \t\n'
 
 lexer = lex.lex(reflags=re.UNICODE|re.VERBOSE)
 
-data1 = '''
-    x ære-samma-som 4.
-    dersom-atter x mere-enn 2
-    så spøtt-ut x, ellers-så
-    ente-gjør-no, åsså-æru-ferdig.
-'''
-data2 = '''
-    x ære-samma-som 4.
-'''
-data3 = '''
-    x ære-samma-som 4.
-    y ære-samma-som x plussær 5.
-'''
-data4 = '''
-    x ære-samma-som 4.
-    y ære-samma-som hællæ 1 plussær x prekæs gangær 2.
-    dersom-atter x plussær y mere-enn 11
-    så spøtt-ut y, ellers-så
-    spøtt-ut x, åsså-æru-ferdig.
-'''
-data5 = '''
-    i ære-samma-som 0.
-    så-lenge i småære-enn 10 
-    ta-åsså-gjør 
-    i ære-samma-som i plussær 1.
-    dersom-atter i gangær i mere-enn 20
-    så gi-dæ,
-    ellers-så ente-gjør-no,
-    åsså-æru-ferdig.
-    spøtt-ut i. 
-    åsså-gjøru-det-igjen.
-'''
-data6 = '''
-    n ære-samma-som 2.
-    så-lenge n småære-enn 100 ta-åsså-gjør 
-        p ære-samma-som klart-det.
-        d ære-samma-som 2.
-        så-lenge d småære-enn n delær 2 plussær 1 ta-åsså-gjør 
-            dersom-atter 
-                hællæ n mådda-med d prekæs er-prikk-lik 0
-            så 
-                p ære-samma-som ente-rekti.
-                gi-dæ.
-            ellers-så 
-                ente-gjør-no,
-            åsså-æru-ferdig.
-            d ære-samma-som d plussær 1.
-        åsså-gjøru-det-igjen.
-        dersom-atter 
-            p 
-        så 
-            spøtt-ut n. 
-        ellers-så
-            ente-gjør-no.
-        åsså-æru-ferdig.
-        n ære-samma-som n plussær 1.
-    åsså-gjøru-det-igjen.
-'''
-
-data7 = '''
-    x ære-samma-som "Hællæ åssen gåre meræ da 1234"4 !!?#:$¤"'#.'..,, | '".
-    spøtt-ut x.
-'''
-
-lexer.input(data7)
-for tok in lexer:
-    print(tok)
-
 precedence = (
     ('nonassoc', 'LT', 'GT', 'EQ'),  # Nonassociative operators
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
-    # ('right', 'UMINUS'),            # Unary minus operator
 )
 
 def p_expression_binop(p):
@@ -208,16 +133,20 @@ def p_statement_pass(p):
     p[0] = ('pass-statement',)
     
 def p_error(p):
-    print("Syntax Error in Input!")
-    
- 
+    if p is not None: 
+        print(f"\033[91mUnexpected Token '{p.value}'\033[0m")
+    else:
+        print('Unexpected end of input')
+        
 # Error rule for syntax errors
-    
-# Build the parser
-parser = yacc.yacc(start='statement')
-out = parser.parse(data7)
-pprint.pprint(out)
 
-from interpreter import interpret
-interpret(out)
+# Build the parser
+parser = yacc.yacc(start='statement', debug=True)
+# pprint.pprint(out)
+
+def parse(script):
+    return parser.parse(script)
+
+# from interpreter import interpret
+# interpret(out)
  

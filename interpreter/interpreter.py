@@ -30,7 +30,7 @@ def interpret(ast):
             case 'assign-statement':
                 assignment_store[ast[1]] = interpret_internal(ast[2], assignment_store)
             case 'if-statement':
-                if (interpret_internal(ast[1], assignment_store)):
+                if interpret_internal(ast[1], assignment_store):
                     code = interpret_internal(ast[2], assignment_store)
                 else:
                     code = interpret_internal(ast[3], assignment_store)
