@@ -133,3 +133,4 @@ dmypy.json
 
 *parser.out
 *parsetab.py
+tests/temp
