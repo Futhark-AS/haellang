@@ -1,5 +1,7 @@
 # The Hællang Programming Language
 
+![Hællang Logo](logo/Haellang_logo.png)
+
 #### The number one programming language for østfoldingær
 
 > # Installation
