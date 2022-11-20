@@ -23,6 +23,8 @@ tests = [
     'while_test',
     'operators_test',
     'if_else_statement_test',
+    'while_with_break_test',
+    'list_test'
 ]
 
 def run_tests():
