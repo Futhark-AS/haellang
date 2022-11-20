@@ -24,12 +24,7 @@ def addHyphens(script, hyphenMap):
         script = script.replace(key, value)
     return script
 
-def main(args):
-    if(len(args) == 0):
-        raise FileNotFoundError("Must provide a path to a file")
-    filename = args[0]
-    if(not os.path.exists(filename)):
-        raise FileNotFoundError("Invalid path or file does not exist")
+def execute(filename):
     script = io.open(filename, mode="r", encoding="utf-8").read()
     script = addHyphens(script, hyphenMap)
     parsed_script = parse(script)
@@ -37,6 +32,14 @@ def main(args):
         raise SyntaxError("Invalid input")
     interpret(parsed_script)
     
+
+def main(args):
+    if(len(args) == 0):
+        raise FileNotFoundError("Must provide a path to a file")
+    filename = args[0]
+    if(not os.path.exists(filename)):
+        raise FileNotFoundError("Invalid path or file does not exist")
+    execute(filename)
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ sys.path.append("..")
 
 from parser.parser import parse
 from interpreter.interpreter import interpret
+from haellae import execute
 import filecmp
 
 class t_colors:
@@ -31,8 +32,7 @@ def run_tests():
     for test in tests:
         stdout = sys.stdout
         with open(f'temp/{test}_output.txt', 'w') as sys.stdout:
-            with open(f'test_data/{test}.haellae', 'r') as test_file:
-                interpret(parse(test_file.read()))
+            execute(f'test_data/{test}.haellae')
         sys.stdout = stdout 
         if not filecmp.cmp(f'temp/{test}_output.txt', f'test_data/{test}_c.txt'):
             print(f'{t_colors.FAIL}{t_colors.BOLD}X Test: {t_colors.WARNING}{t_colors.ITALIC}{test}{t_colors.ENDITALIC}{t_colors.FAIL} failed with incorrect output{t_colors.ENDC}')
