@@ -31,14 +31,8 @@ def interpret(ast):
                 assignment_store[ast[1]] = interpret_internal(ast[2], assignment_store)
             case 'if-statement':
                 if interpret_internal(ast[1], assignment_store):
-                    code = interpret_internal(ast[2], assignment_store)
-                else:
-                    code = interpret_internal(ast[3], assignment_store)
-                match code:
-                    case 'BREAK':
-                        return 'BREAK'
-                    case _:
-                        pass
+                    return interpret_internal(ast[2], assignment_store)
+                return interpret_internal(ast[3], assignment_store)
             case 'binary-expression': 
                 op = None
                 match ast[1]:
@@ -67,6 +61,12 @@ def interpret(ast):
                 return ast[1]
             case 'variable-expression':
                 return assignment_store[ast[1]]
+            case 'list-expression':
+                return interpret_internal(ast[1], assignment_store)
+            case 'list-body':
+                if len(ast) == 3:
+                    return [interpret_internal(ast[1], assignment_store)] + interpret_internal(ast[2], assignment_store)
+                return [interpret_internal(ast[1], assignment_store)]
             case 'print-statement':
                 print(interpret_internal(ast[1], assignment_store))
             case 'pass-statement':

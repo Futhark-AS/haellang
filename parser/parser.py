@@ -26,6 +26,9 @@ reserved = {
     'klart-det':'TRUE',
     'ente-rekti':'FALSE',
     'gi-dæ':'BREAK',
+    'en-bråtæ-beståænes-av':'START_OF_LIST',
+    'å':'LIST_ITEM_SEPARATOR',
+    'å-det-var-det':'END_OF_LIST',
 }
 
 tokens = [ 
@@ -97,6 +100,18 @@ def p_expression_number(p):
 def p_expression_string(p):
     '''expression : STRING'''
     p[0] = ('literal-expression', p[1])
+
+def p_expression_list(p):
+    '''expression : START_OF_LIST list-body END_OF_LIST'''
+    p[0] = ('list-expression', p[2])
+
+def p_expression_list_body_recursive(p):
+    '''list-body : expression LIST_ITEM_SEPARATOR list-body'''
+    p[0] = ('list-body', p[1], p[3])
+
+def p_expression_list_body_base(p):
+    '''list-body : expression'''
+    p[0] = ('list-body', p[1])
     
 def p_expression_float(p):
     '''expression : FLOAT'''
@@ -159,3 +174,27 @@ def parse(script):
 # from interpreter import interpret
 # interpret(out)
  
+# import sys
+# import os
+# import io
+# import pprint
+
+# def main(args):
+#     if(len(args) == 0):
+#         raise FileNotFoundError("Must provide a path to a file")
+#     filename = args[0]
+#     if(not os.path.exists(filename)):
+#         raise FileNotFoundError("Invalid path or file does not exist")
+#     script = io.open(filename, mode="r", encoding="utf-8").read()
+#     print((script))
+#     parsed_script = parse(script)
+#     if(parsed_script == None):
+#         raise SyntaxError("Invalid input")
+#     parser_output = parse(parsed_script)
+#     pprint.pprint(parser_output)
+    
+    
+
+
+# if __name__ == "__main__":
+#    main(sys.argv[1:])
