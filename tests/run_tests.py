@@ -25,7 +25,8 @@ tests = [
     'operators_test',
     'if_else_statement_test',
     'while_with_break_test',
-    'list_test'
+    'list_test',
+    'list_operations_test',
 ]
 
 def run_tests():
