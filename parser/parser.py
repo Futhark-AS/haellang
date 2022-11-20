@@ -29,6 +29,10 @@ reserved = {
     'en-bråtæ-beståænes-av':'START_OF_LIST',
     'å':'LIST_ITEM_SEPARATOR',
     'å-det-var-det':'END_OF_LIST',
+    'legg-te':'PUSH',
+    'på':'IN',
+    'græbb-fra':'POP',
+    'plass-nummer':'ARRAY_INDEX'
 }
 
 tokens = [ 
@@ -48,7 +52,7 @@ def t_NAME(t):
     return t
 
 def t_FLOAT(t):
-    r'\d+.\d+'
+    r'\d+\.\d+'
     print(t)
     t.value = float(t.value)
     return t
@@ -133,6 +137,10 @@ def p_statement_recursive(p):
     'statement : statement statement'
     p[0] = ('recursive-statement', p[1], p[2])
 
+def p_statement_expression(p):
+    'statement : expression END_OF_STATEMENT'
+    p[0] = ('expression-statement', p[1])
+
 def p_statement_if(p):
     'statement : IF expression THEN statement ELSE THEN statement END_OF_IF_THEN_ELSE END_OF_STATEMENT'
     p[0] = ('if-statement', p[2], p[4], p[7])
@@ -149,9 +157,21 @@ def p_statement_while(p):
     'statement : WHILE expression DO statement END_OF_WHILE END_OF_STATEMENT'
     p[0] = ('while-statement', p[2], p[4])
     
-def p_statement_print(p):
-    'statement : PRINT expression END_OF_STATEMENT'
-    p[0] = ('print-statement', p[2])
+def p_expression_print(p):
+    'expression : PRINT expression'
+    p[0] = ('print-function', p[2])
+
+def p_expression_push(p):
+    'expression : PUSH expression IN expression'
+    p[0] = ('push-function', p[2], p[4])
+
+def p_expression_pop(p):
+    'expression : POP expression'
+    p[0] = ('pop-function', p[2])
+
+def p_expression_array_index(p):
+    'expression : ARRAY_INDEX expression IN expression'
+    p[0] = ('index-expression', p[2], p[4])
 
 def p_statement_pass(p):
     'statement : PASS END_OF_STATEMENT'

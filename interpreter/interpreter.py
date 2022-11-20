@@ -1,4 +1,5 @@
 import operator
+import pprint
 
 statement_return_codes = set(
     'BREAK',
@@ -11,6 +12,7 @@ def interpret(ast):
         ast (_type_): The abstract syntax tree to be executed 
     """
 
+    # pprint.pprint(ast)
     # Assignment store to hold the values of all variables
     assignment_store = dict()
 
@@ -29,6 +31,8 @@ def interpret(ast):
                             pass
             case 'assign-statement':
                 assignment_store[ast[1]] = interpret_internal(ast[2], assignment_store)
+            case 'expression-statement':
+                interpret_internal(ast[1], assignment_store)
             case 'if-statement':
                 if interpret_internal(ast[1], assignment_store):
                     return interpret_internal(ast[2], assignment_store)
@@ -67,8 +71,28 @@ def interpret(ast):
                 if len(ast) == 3:
                     return [interpret_internal(ast[1], assignment_store)] + interpret_internal(ast[2], assignment_store)
                 return [interpret_internal(ast[1], assignment_store)]
-            case 'print-statement':
+            case 'print-function':
                 print(interpret_internal(ast[1], assignment_store))
+            case 'push-function':
+                list_ref = interpret_internal(ast[2], assignment_store)
+                if not type(list_ref) == list:
+                    raise(TypeError('Du kanke legge te i noe som ente er e bråtæ'))
+                list_ref.append(interpret_internal(ast[1], assignment_store))
+            case 'pop-function':
+                list_ref = interpret_internal(ast[1], assignment_store)
+                if not type(list_ref) == list:
+                    raise(TypeError('Du kanke græbbe ifra noe som ente er e bråtæ'))
+                return list_ref.pop()
+            case 'index-expression':
+                index = interpret_internal(ast[1], assignment_store)
+                list_ref = interpret_internal(ast[2], assignment_store)
+                if not type(index) == int:
+                    raise(TypeError('Du kanke titte på en plass som ente er et tall uten kåmma'))
+                if not type(list_ref) == list:
+                    raise(TypeError('Du kanke utifra noe som ente er e bråtæ'))
+                if index < 1 or index > len(list_ref):
+                    raise(IndexError(f'Dæven æ mårr! Klaræru ente å telle eller? Ærnte en plass {index} i den bråtæn.'))
+                return list_ref[index-1]
             case 'pass-statement':
                 pass
             case 'while-statement':
@@ -82,6 +106,6 @@ def interpret(ast):
             case 'break-statement':
                 return 'BREAK'
             case _:
-                raise('Illegal AST Node')
+                raise(ValueError(f'Illegal AST Node {ast[0]}'))
 
     interpret_internal(ast, assignment_store)
