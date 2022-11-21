@@ -45,6 +45,7 @@ def run_tests():
 
 
 def main():
+    exit(1)
     run_tests()
 
 if __name__ == '__main__':
