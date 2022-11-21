@@ -34,25 +34,31 @@ def interpret(ast):
                 
             case 'assign-function':
                 parameter_list = interpret_internal(ast[2], None)
+                if parameter_list is None:
+                    parameter_list = list()
                 assignment_store[ast[1]] = {
-                    'parameter_list': parameter_list,
+                    'parameter-list': parameter_list,
                     'body': ast[3],
-                    'return_expression': ast[4]
+                    'return-expression': ast[4]
                 }
 
-            case 'run-function': # Run function without return
+            case 'run-function': # Run function and return
                 function = assignment_store[ast[1]]
-                local_dict = dict()
-                argument_list = interpret_internal(ast[2], None)
-                for key, value in zip(function['parameter_list'], argument_list):
-                    local_dict[key] = value
+                param_dict = dict()
+                argument_list = interpret_internal(ast[2], assignment_store)
+                if argument_list is not None:
+                    for key, value in zip(function['parameter-list'], argument_list):
+                        param_dict[key] = value
 
-                interpret_internal(function['body'], dict(assignment_store , **local_dict))
+                local_dict = dict(assignment_store, **param_dict) # Merge the two dictionaries
+                interpret_internal(function['body'], local_dict)
+                return interpret_internal(function['return-expression'], local_dict)
 
             case 'parameters':
                 if len(ast) == 3:
                     return [ast[1]] + interpret_internal(ast[2], assignment_store)
                 return [ast[1]]
+            # Trenger man en case for 'empty'?
 
             
             case 'expression-statement':

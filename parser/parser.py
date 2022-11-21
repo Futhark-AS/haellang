@@ -36,7 +36,9 @@ reserved = {
     'kjør':'RUN',
     'gi-tilbake':'RETURN',
     'han':'FUNCTION',
-    'siær': 'START_OF_FUNCTION',
+    'siær-atter': 'START_OF_FUNCTION',
+    'ferdig' : 'END_OF_FUNCTION',
+    'med' : 'WITH_PARAMS',    
 }
 
 tokens = [ 
@@ -150,25 +152,65 @@ def p_statement_if(p):
     p[0] = ('if-statement', p[2], p[4], p[7])
 
 def p_variable_parameters(p):
-    'parameters : NAME LIST_ITEM_SEPERATOR parameters'
+    'parameters : NAME LIST_ITEM_SEPARATOR parameters'
     p[0] = ('parameters', p[1], p[3])
 
 def p_variable_parameters_base(p):
-    'parameters : NAME'
+    '''parameters : NAME
+                  | empty'''
     p[0] = ('parameters', p[1])
 
+def p_empty(p):
+    'empty :'
+    p[0] = None
+
+'''
+----------------- functions start ----------------- bare for oversikt
+'''
 def p_function_assign(p):
-    'statement: FUNCTION NAME LPAREN parameters RPAREN START_OF_FUNCTION statement RETURN expression END_OF_STATEMENT'
-    p[0] = ('assign-function', p[2], p[4], p[7], p[9])
+    'statement : FUNCTION NAME WITH_PARAMS parameters START_OF_FUNCTION statement RETURN expression END_OF_FUNCTION'
+    p[0] = ('assign-function', p[2], p[4], p[6], p[8])
+
+def p_function_assign_no_params_no_return(p):
+    'statement : FUNCTION NAME START_OF_FUNCTION statement END_OF_FUNCTION'
+    p[0] = ('assign-function', p[2], ('literal-expression', None), p[4], ('literal-expression', None))
+
+def p_function_assign_no_params(p):
+    'statement : FUNCTION NAME START_OF_FUNCTION statement RETURN expression END_OF_FUNCTION'
+    p[0] = ('assign-function', p[2], ('literal-expression', None), p[4], p[6])
+
+def p_function_assign_no_return(p):
+    'statement : FUNCTION NAME WITH_PARAMS parameters START_OF_FUNCTION statement END_OF_FUNCTION'
+    p[0] = ('assign-function', p[2], p[4], p[6], ('literal-expression', None))
+
+def p_function_assign_no_body(p):
+    'statement : FUNCTION NAME WITH_PARAMS parameters START_OF_FUNCTION RETURN expression END_OF_FUNCTION'
+    p[0] = ('assign-function', p[2], p[4], ('literal-expression', None), p[7])
+
+def p_function_assign_no_params_no_body(p):
+    'statement : FUNCTION NAME START_OF_FUNCTION RETURN expression END_OF_FUNCTION'
+    p[0] = ('assign-function', p[2], ('literal-expression', None), ('literal-expression', None), p[5])
 
 def p_function_run(p):
-    'statement: RUN NAME LPAREN list-body RPAREN END_OF_STATEMENT'
+    'statement : RUN NAME WITH_PARAMS list-body END_OF_STATEMENT'
     p[0] = ('run-function', p[2], p[4])
 
-def p_function_run_return(p):
-    'expression: RUN NAME LPAREN list-body RPAREN'
-    p[0] = ('run-function-return', p[2], p[4])
+def p_function_run_no_args(p):
+    'statement : RUN NAME END_OF_STATEMENT'
+    p[0] = ('run-function', p[2], ('literal-expression', None))
 
+
+def p_function_run_and_return(p):
+    'expression : RUN NAME WITH_PARAMS list-body'
+    p[0] = ('run-function', p[2], p[4])
+
+def p_function_run_and_return_no_args(p):
+    'expression : RUN NAME'
+    p[0] = ('run-function', p[2], ('literal-expression', None))
+
+'''
+----------------- functions end -----------------
+'''
 def p_statement_assign(p):
     'statement : NAME EQUALS expression END_OF_STATEMENT'
     p[0] = ('assign-statement', p[1], p[3])
