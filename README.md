@@ -21,19 +21,23 @@ Now you can you write a .haellae file in Hællang and run it using the command: 
 | Hællang Code                                        | Python Interpretation                                      |
 | --------------------------------------------------- | ---------------------------------------------------------- |
 | .                                                   | END_OF_STATEMENT                                           |
-| dersom atter .. så .. ellers så .. åsså æru ferdig. | IF .. THEN .. ELSE THEN .. END_OF_IF_ELSE END_OF_STATEMENT |
-| gi dæ                                               | BREAK                                                      |
-| dra tebake deru kom fra                             | END_OF_FUNCTION                                            |
-| ta meræ                                             | RETURN                                                     |
-| imens .. ta åsså gjør .. åsså gjøru det igjen       | WHILE .. DO .. END_OF_WHILE                                |
-| spøtt ut                                            | PRINT                                                      |
-| mere enn, småære enn, ære samma som                 | GT, LT, EQUALS                                             |
-| plussær, minusær, delær, gangær, mådda med          | PLUS, MINUS, TIMES, DIVIDE, MOD                            |
+| dersom-atter .. så .. ellers så .. åsså-æru-ferdig. | IF .. THEN .. ELSE THEN .. END_OF_IF_ELSE END_OF_STATEMENT |
+| gi-dæ                                               | BREAK                                                      |
+| dra-tebake-deru-kom-fra                             | END_OF_FUNCTION                                            |
+| ta-meræ                                             | RETURN                                                     |
+| imens .. ta-åsså-gjør .. åsså-gjøru-det-igjen       | WHILE .. DO .. END_OF_WHILE                                |
+| spøtt-ut                                            | PRINT                                                      |
+| mere-enn, småære-enn, ære-samma-som                 | GT, LT, EQUALS                                             |
+| plussær, minusær, delær, gangær, mådda-med          | PLUS, MINUS, TIMES, DIVIDE, MOD                            |
 | hællæ, prekæs                                       | LPAREN, RPAREN                                             |
-| ær prikk lik                                        | EQ                                                         |
-| ente gjør no                                        | PASS                                                       |
-| klart det                                           | TRUE                                                       |
-| ente rekti                                          | FALSE                                                      |
+| ær-prikk-lik                                        | EQ                                                         |
+| ente-gjør-no                                        | PASS                                                       |
+| klart-det                                           | TRUE                                                       |
+| ente-rekti                                          | FALSE                                                      |
+| en-bråtæ-beståænes-av .. å .. å-det-var-det         | START_OF_LIST .. LIST_SEPARATOR .. END_OF_LIST             |
+| legg-te .. på x                                     | x.append(..)                                               |
+| græbb-fra x                                         | x.pop()                                                    |
+| plass-nummer .. på x                                | x[..]                                                      |
 
 > ##### Example Code
 
