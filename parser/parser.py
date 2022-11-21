@@ -32,7 +32,11 @@ reserved = {
     'legg-te':'PUSH',
     'på':'IN',
     'græbb-fra':'POP',
-    'plass-nummer':'ARRAY_INDEX'
+    'plass-nummer':'ARRAY_INDEX',
+    'kjør':'RUN',
+    'gi-tilbake':'RETURN',
+    'han':'FUNCTION',
+    'siær': 'START_OF_FUNCTION',
 }
 
 tokens = [ 
@@ -144,6 +148,26 @@ def p_statement_expression(p):
 def p_statement_if(p):
     'statement : IF expression THEN statement ELSE THEN statement END_OF_IF_THEN_ELSE END_OF_STATEMENT'
     p[0] = ('if-statement', p[2], p[4], p[7])
+
+def p_variable_parameters(p):
+    'parameters : NAME LIST_ITEM_SEPERATOR parameters'
+    p[0] = ('parameters', p[1], p[3])
+
+def p_variable_parameters_base(p):
+    'parameters : NAME'
+    p[0] = ('parameters', p[1])
+
+def p_function_assign(p):
+    'statement: FUNCTION NAME LPAREN parameters RPAREN START_OF_FUNCTION statement RETURN expression END_OF_STATEMENT'
+    p[0] = ('assign-function', p[2], p[4], p[7], p[9])
+
+def p_function_run(p):
+    'statement: RUN NAME LPAREN list-body RPAREN END_OF_STATEMENT'
+    p[0] = ('run-function', p[2], p[4])
+
+def p_function_run_return(p):
+    'expression: RUN NAME LPAREN list-body RPAREN'
+    p[0] = ('run-function-return', p[2], p[4])
 
 def p_statement_assign(p):
     'statement : NAME EQUALS expression END_OF_STATEMENT'

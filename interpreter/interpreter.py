@@ -31,6 +31,30 @@ def interpret(ast):
                             pass
             case 'assign-statement':
                 assignment_store[ast[1]] = interpret_internal(ast[2], assignment_store)
+                
+            case 'assign-function':
+                parameter_list = interpret_internal(ast[2], None)
+                assignment_store[ast[1]] = {
+                    'parameter_list': parameter_list,
+                    'body': ast[3],
+                    'return_expression': ast[4]
+                }
+
+            case 'run-function': # Run function without return
+                function = assignment_store[ast[1]]
+                local_dict = dict()
+                argument_list = interpret_internal(ast[2], None)
+                for key, value in zip(function['parameter_list'], argument_list):
+                    local_dict[key] = value
+
+                interpret_internal(function['body'], dict(assignment_store , **local_dict))
+
+            case 'parameters':
+                if len(ast) == 3:
+                    return [ast[1]] + interpret_internal(ast[2], assignment_store)
+                return [ast[1]]
+
+            
             case 'expression-statement':
                 interpret_internal(ast[1], assignment_store)
             case 'if-statement':
