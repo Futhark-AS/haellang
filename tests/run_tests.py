@@ -30,6 +30,7 @@ tests = [
 ]
 
 def run_tests():
+    failed = 0
     for test in tests:
         stdout = sys.stdout
         with open(f'temp/{test}_output.txt', 'w') as sys.stdout:
@@ -37,15 +38,16 @@ def run_tests():
         sys.stdout = stdout 
         if not filecmp.cmp(f'temp/{test}_output.txt', f'test_data/{test}_c.txt'):
             print(f'{t_colors.FAIL}{t_colors.BOLD}X Test: {t_colors.WARNING}{t_colors.ITALIC}{test}{t_colors.ENDITALIC}{t_colors.FAIL} failed with incorrect output{t_colors.ENDC}')
+            failed = 1
         else:
             print(f'{t_colors.OKGREEN}{t_colors.BOLD}✓ Test: {t_colors.OKCYAN}{t_colors.ITALIC}{test}{t_colors.ENDITALIC}{t_colors.OKGREEN} completed successfully{t_colors.ENDC}')
+    exit(failed)
 
 
     
 
 
 def main():
-    exit(1)
     run_tests()
 
 if __name__ == '__main__':
