@@ -1,7 +1,6 @@
 import sys
 sys.path.append("..")
 
-from parser.parser import parse
 from interpreter.interpreter import interpret
 from haellae import execute
 import filecmp
@@ -27,6 +26,7 @@ tests = [
     'while_with_break_test',
     'list_test',
     'list_operations_test',
+    'float_test'
 ]
 
 def run_tests():

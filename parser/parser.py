@@ -1,6 +1,8 @@
 import ply.lex as lex
 import ply.yacc as yacc
 import re
+import sys 
+sys.tracebacklimit = 0
 
 reserved = {
     'plussær':'PLUS',
@@ -32,11 +34,12 @@ reserved = {
     'legg-te':'PUSH',
     'på':'IN',
     'græbb-fra':'POP',
-    'plass-nummer':'ARRAY_INDEX'
+    'plass-nummer':'ARRAY_INDEX',
+    'kåmma':'COMMA',
 }
 
 tokens = [ 
-    'NAME','NUMBER', 'STRING', 'FLOAT',
+    'NAME','NUMBER', 'STRING', 
     'END_OF_STATEMENT',
 ] + list(set(reserved.values()))
 
@@ -51,12 +54,6 @@ def t_NAME(t):
     r'[a-zA-ZæøåÆØÅ_][a-zA-ZæøåÆØÅ0-9_]*'
     return t
 
-def t_FLOAT(t):
-    r'\d+\.\d+'
-    print(t)
-    t.value = float(t.value)
-    return t
-
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)    
@@ -67,11 +64,14 @@ def t_STRING(t):
     t.value = t.value[1:-1]
     return t
 
-def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+def t_newline(t):
+    r'\n'
+    t.lexer.lineno += 1
 
-t_ignore = ' \t\n'
+def t_error(t):
+    raise(ValueError(f'Ulovli bokstav {t.value[0]}'))
+
+t_ignore = ' \t'
 
 lexer = lex.lex(reflags=re.UNICODE|re.VERBOSE)
 
@@ -79,6 +79,7 @@ precedence = (
     ('nonassoc', 'LT', 'GT', 'EQ'),  # Nonassociative operators
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
+    ('nonassoc', 'COMMA')
 )
 
 def p_expression_binop(p):
@@ -101,6 +102,10 @@ def p_expression_number(p):
     '''expression : NUMBER'''
     p[0] = ('literal-expression',p[1])
 
+def p_expression_float(p):
+    '''expression : NUMBER COMMA NUMBER'''
+    p[0] = ('literal-expression',float(str(p[1])+'.'+str(p[3])))
+
 def p_expression_string(p):
     '''expression : STRING'''
     p[0] = ('literal-expression', p[1])
@@ -117,10 +122,6 @@ def p_expression_list_body_base(p):
     '''list-body : expression'''
     p[0] = ('list-body', p[1])
     
-def p_expression_float(p):
-    '''expression : FLOAT'''
-    p[0] = ('literal-expression', p[1])
-
 def p_expression_true(p):
     '''expression : TRUE'''
     p[0] = ('literal-expression', True)
@@ -179,9 +180,9 @@ def p_statement_pass(p):
     
 def p_error(p):
     if p is not None: 
-        print(f"\033[91mUnexpected Token '{p.value}'\033[0m")
+        raise ValueError(f"\033[91mUnexpected Token '{p.value} on line {p.lineno}'\033[0m") from None
     else:
-        print('Unexpected end of input')
+        raise(ValueError('Unexpected end of input'))
         
 # Error rule for syntax errors
 # Build the parser
@@ -189,6 +190,7 @@ parser = yacc.yacc(start='statement', debug=True)
 # pprint.pprint(out)
 
 def parse(script):
+    lexer.lineno = 1
     return parser.parse(script)
 
 # from interpreter import interpret
