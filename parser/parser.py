@@ -42,6 +42,9 @@ reserved = {
     'i-orlboka':'IN_DICT',
     'størlsen-a':'LENGTH',
     'fjærn':'DICT_REMOVE',
+    'hent-ut-pytonslange-funksjon':'IMPORT',
+    'å-kallen-for': 'AS',
+    'i-samma-slengen': 'END_OF_IMPORT',
 }
 
 tokens = [ 
@@ -216,6 +219,11 @@ def p_expression_dict_remove(p):
 def p_expression_length(p):
     'expression : LENGTH expression'
     p[0] = ('length-function', p[2])
+    
+# Import python's built-in functions
+def p_expression_import(p):
+    'expression : IMPORT expression AS NAME END_OF_IMPORT'
+    p[0] = ('import-function', p[2], p[4])
 
 def p_statement_pass(p):
     'statement : PASS END_OF_STATEMENT'

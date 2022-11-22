@@ -29,6 +29,7 @@ tests = [
     'float_test',
     'dict_test',
     'dict_operations_test',
+    'import_test',
 ]
 
 def run_tests():
