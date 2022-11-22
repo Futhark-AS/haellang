@@ -66,11 +66,28 @@ def interpret(ast):
             case 'variable-expression':
                 return assignment_store[ast[1]]
             case 'list-expression':
-                return interpret_internal(ast[1], assignment_store)
+                if len(ast) ==2 :
+                    return interpret_internal(ast[1], assignment_store)
+                return list()
             case 'list-body':
                 if len(ast) == 3:
                     return [interpret_internal(ast[1], assignment_store)] + interpret_internal(ast[2], assignment_store)
                 return [interpret_internal(ast[1], assignment_store)]
+            case 'dict-expression':
+                if len(ast) == 2:
+                    return interpret_internal(ast[1], assignment_store)
+                return dict()
+            case 'dict-body':
+                if len(ast) == 4:
+                    tail_dict = interpret_internal(ast[1], assignment_store)
+                    key = interpret_internal(ast[2], assignment_store)
+                    value = interpret_internal(ast[3], assignment_store)
+                    tail_dict[key] = value
+                    return tail_dict
+                key = interpret_internal(ast[1], assignment_store)
+                value = interpret_internal(ast[2], assignment_store)
+                return {key:value}
+
             case 'print-function':
                 print(interpret_internal(ast[1], assignment_store))
             case 'push-function':

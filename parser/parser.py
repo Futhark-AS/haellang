@@ -36,6 +36,9 @@ reserved = {
     'græbb-fra':'POP',
     'plass-nummer':'ARRAY_INDEX',
     'kåmma':'COMMA',
+    'e-orlbok-beståænes-av':'START_OF_DICT',
+    'å-så-var-orlboka-færi':'END_OF_DICT',
+    'betyænes':'DICT_PAIR_SEPARATOR',
 }
 
 tokens = [ 
@@ -109,6 +112,26 @@ def p_expression_float(p):
 def p_expression_string(p):
     '''expression : STRING'''
     p[0] = ('literal-expression', p[1])
+    
+def p_expression_dict_empty(p):
+    '''expression : START_OF_DICT END_OF_DICT'''
+    p[0] = ('dict-expression',)
+    
+def p_expression_dict(p):
+    '''expression : START_OF_DICT dict-body END_OF_DICT'''
+    p[0] = ('dict-expression', p[2])
+    
+def p_expression_dict_body_recursive(p):
+    '''dict-body : dict-body  LIST_ITEM_SEPARATOR expression DICT_PAIR_SEPARATOR expression'''
+    p[0] = ('dict-body', p[1], p[3], p[5])
+
+def p_expression_dict_body_base(p):
+    '''dict-body : expression DICT_PAIR_SEPARATOR expression'''
+    p[0] = ('dict-body', p[1], p[3])
+    
+def p_expression_list_empty(p):
+    '''expression : START_OF_LIST END_OF_LIST'''
+    p[0] = ('list-expression',)
 
 def p_expression_list(p):
     '''expression : START_OF_LIST list-body END_OF_LIST'''
