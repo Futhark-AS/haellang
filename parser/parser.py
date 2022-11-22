@@ -2,7 +2,6 @@ import ply.lex as lex
 import ply.yacc as yacc
 import re
 import sys 
-sys.tracebacklimit = 0
 
 reserved = {
     'plussær':'PLUS',
@@ -32,10 +31,17 @@ reserved = {
     'å':'LIST_ITEM_SEPARATOR',
     'å-det-var-det':'END_OF_LIST',
     'legg-te':'PUSH',
-    'på':'IN',
+    'i-bråtæn':'IN_LIST',
     'græbb-fra':'POP',
     'plass-nummer':'ARRAY_INDEX',
     'kåmma':'COMMA',
+    'e-orlbok-beståænes-av':'START_OF_DICT',
+    'å-så-var-orlboka-færi':'END_OF_DICT',
+    'betyænes':'DICT_PAIR_SEPARATOR',
+    'slå-opp':'DICT_LOOKUP',
+    'i-orlboka':'IN_DICT',
+    'størlsen-a':'LENGTH',
+    'fjærn':'DICT_REMOVE',
 }
 
 tokens = [ 
@@ -79,7 +85,8 @@ precedence = (
     ('nonassoc', 'LT', 'GT', 'EQ'),  # Nonassociative operators
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
-    ('nonassoc', 'COMMA')
+    ('nonassoc', 'COMMA'),
+    ('nonassoc', 'IN_DICT', 'IN_LIST'),
 )
 
 def p_expression_binop(p):
@@ -109,6 +116,26 @@ def p_expression_float(p):
 def p_expression_string(p):
     '''expression : STRING'''
     p[0] = ('literal-expression', p[1])
+    
+def p_expression_dict_empty(p):
+    '''expression : START_OF_DICT END_OF_DICT'''
+    p[0] = ('dict-expression',)
+    
+def p_expression_dict(p):
+    '''expression : START_OF_DICT dict-body END_OF_DICT'''
+    p[0] = ('dict-expression', p[2])
+    
+def p_expression_dict_body_recursive(p):
+    '''dict-body : dict-body  LIST_ITEM_SEPARATOR expression DICT_PAIR_SEPARATOR expression'''
+    p[0] = ('dict-body', p[1], p[3], p[5])
+
+def p_expression_dict_body_base(p):
+    '''dict-body : expression DICT_PAIR_SEPARATOR expression'''
+    p[0] = ('dict-body', p[1], p[3])
+    
+def p_expression_list_empty(p):
+    '''expression : START_OF_LIST END_OF_LIST'''
+    p[0] = ('list-expression',)
 
 def p_expression_list(p):
     '''expression : START_OF_LIST list-body END_OF_LIST'''
@@ -163,7 +190,7 @@ def p_expression_print(p):
     p[0] = ('print-function', p[2])
 
 def p_expression_push(p):
-    'expression : PUSH expression IN expression'
+    'expression : PUSH expression IN_LIST expression'
     p[0] = ('push-function', p[2], p[4])
 
 def p_expression_pop(p):
@@ -171,8 +198,24 @@ def p_expression_pop(p):
     p[0] = ('pop-function', p[2])
 
 def p_expression_array_index(p):
-    'expression : ARRAY_INDEX expression IN expression'
+    'expression : ARRAY_INDEX expression IN_LIST expression'
     p[0] = ('index-expression', p[2], p[4])
+    
+def p_expression_dict_lookup(p):
+    'expression : DICT_LOOKUP expression IN_DICT expression'
+    p[0] = ('lookup-expression', p[2], p[4])
+
+def p_expression_dict_add(p):
+    'expression : PUSH expression DICT_PAIR_SEPARATOR expression IN_DICT expression'
+    p[0] = ('add-expression', p[2], p[4], p[6])
+
+def p_expression_dict_remove(p):
+    'expression : DICT_REMOVE expression IN_DICT expression'
+    p[0] = ('remove-expression', p[2], p[4])
+    
+def p_expression_length(p):
+    'expression : LENGTH expression'
+    p[0] = ('length-function', p[2])
 
 def p_statement_pass(p):
     'statement : PASS END_OF_STATEMENT'
@@ -187,9 +230,10 @@ def p_error(p):
 # Error rule for syntax errors
 # Build the parser
 parser = yacc.yacc(start='statement', debug=True)
-# pprint.pprint(out)
+    # pprint.pprint(out)
 
 def parse(script):
+    sys.tracebacklimit = 0
     lexer.lineno = 1
     return parser.parse(script)
 

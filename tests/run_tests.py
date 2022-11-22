@@ -26,7 +26,9 @@ tests = [
     'while_with_break_test',
     'list_test',
     'list_operations_test',
-    'float_test'
+    'float_test',
+    'dict_test',
+    'dict_operations_test',
 ]
 
 def run_tests():
@@ -34,9 +36,9 @@ def run_tests():
     for test in tests:
         stdout = sys.stdout
         with open(f'temp/{test}_output.txt', 'w') as sys.stdout:
-            execute(f'test_data/{test}.haellae')
+            execute(f'test_data/test_files/{test}.haellae')
         sys.stdout = stdout 
-        if not filecmp.cmp(f'temp/{test}_output.txt', f'test_data/{test}_c.txt'):
+        if not filecmp.cmp(f'temp/{test}_output.txt', f'test_data/test_solutions/{test}_c.txt'):
             print(f'{t_colors.FAIL}{t_colors.BOLD}X Test: {t_colors.WARNING}{t_colors.ITALIC}{test}{t_colors.ENDITALIC}{t_colors.FAIL} failed with incorrect output{t_colors.ENDC}')
             failed = 1
         else:
