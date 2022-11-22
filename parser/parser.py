@@ -39,7 +39,7 @@ reserved = {
 }
 
 tokens = [ 
-    'NAME','NUMBER', 'STRING', #'FLOAT',
+    'NAME','NUMBER', 'STRING', 
     'END_OF_STATEMENT',
 ] + list(set(reserved.values()))
 
