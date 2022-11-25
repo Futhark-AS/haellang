@@ -1,5 +1,7 @@
 # The Hællang Programming Language
 
+### [Creators](https://github.com/Futhark-AS/haellang/blob/main/CONTRIBUTORS.md)
+
 ![Hællang Logo](logo/Haellang_logo.png)
 
 #### The number one programming language for østfoldingær
@@ -16,30 +18,9 @@
 
 Now you can you write a .haellae file in Hællang and run it using the command: `python haellang.py path-to-file/file.haellae`
 
-> # Semantics
+# [Click here for semantics](https://github.com/Futhark-AS/haellang/blob/main/SEMANTICS.md)
 
-| Hællang Code                                        | Python Interpretation                                      |
-| --------------------------------------------------- | ---------------------------------------------------------- |
-| .                                                   | END_OF_STATEMENT                                           |
-| dersom-atter .. så .. ellers så .. åsså-æru-ferdig. | IF .. THEN .. ELSE THEN .. END_OF_IF_ELSE END_OF_STATEMENT |
-| gi-dæ                                               | BREAK                                                      |
-| dra-tebake-deru-kom-fra                             | END_OF_FUNCTION                                            |
-| ta-meræ                                             | RETURN                                                     |
-| imens .. ta-åsså-gjør .. åsså-gjøru-det-igjen       | WHILE .. DO .. END_OF_WHILE                                |
-| spøtt-ut                                            | PRINT                                                      |
-| mere-enn, småære-enn, ære-samma-som                 | GT, LT, EQUALS                                             |
-| plussær, minusær, delær, gangær, mådda-med          | PLUS, MINUS, TIMES, DIVIDE, MOD                            |
-| hællæ, prekæs                                       | LPAREN, RPAREN                                             |
-| ær-prikk-lik                                        | EQ                                                         |
-| ente-gjør-no                                        | PASS                                                       |
-| klart-det                                           | TRUE                                                       |
-| ente-rekti                                          | FALSE                                                      |
-| en-bråtæ-beståænes-av .. å .. å-det-var-det         | START_OF_LIST .. LIST_SEPARATOR .. END_OF_LIST             |
-| legg-te .. på x                                     | x.append(..)                                               |
-| græbb-fra x                                         | x.pop()                                                    |
-| plass-nummer .. på x                                | x[..]                                                      |
-
-> ##### Example Code
+##### Example Code
 
 ```
 n ære samma som 2.
