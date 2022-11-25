@@ -1,14 +1,14 @@
 is_prime ære-samma-som en-fungsjon såm-brukær n såm-gjør
     i ære-samma-som 2.
-    imens i småære enn n minusær 1 ta-åsså-gjør
+    imens i småære enn n delær 2 ta-åsså-gjør
         dersom-atter hællæ n mådda-med i prekæs er-prikk-lik 0 så
-            gi-tilbake "not prime".
+            gi-tilbake "Not Prime".
         ellers så
             ente-gjør-no.
         åsså-æru-ferdig.
     i ære-samma-som i plussær 1.
     åsså-gjøru-det-igjen.
-    gi-tilbake "prime".
+    gi-tilbake "Prime".
 åså-varn-færi.
 
-spøtt-ut kjør is_prime med 7.
+spøtt-ut kjør is_prime med 101.
