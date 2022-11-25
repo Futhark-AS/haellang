@@ -1,0 +1,6 @@
+Hællang; Python
+dersom-atter; if
+så; THEN
+ellers; else
+åsså-æru-ferdig; END_OF_IF_THEN_ELSE
+dersom-atter ... så ... ellers så ... åsså-æru-ferdig; if ...: ... else: ...
