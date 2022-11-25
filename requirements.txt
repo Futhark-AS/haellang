@@ -1,11 +1,17 @@
 attrs==22.1.0
 exceptiongroup==1.0.4
 iniconfig==1.1.1
+numpy==1.23.5
 packaging==21.3
+pandas==1.5.2
 pluggy==1.0.0
 ply==3.11
+py-markdown-table==0.3.3
 pyparsing==3.0.9
 pyPEG2==2.15.2
 pytest==7.2.0
+python-dateutil==2.8.2
+pytz==2022.6
+six==1.16.0
 sly==0.5
 tomli==2.0.1

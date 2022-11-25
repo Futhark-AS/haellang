@@ -1,0 +1,5 @@
+Hællang; Python
+imens; while
+ta-åsså-gjør; DO
+åsså-gjøru-det-igjen; END_OF_WHILE
+imens x småære-enn 10 ta-åsså-gjør spøtt-ut x. x ære-samma-som x plussær 1. åsså-gjøru-det-igjen; while x < 10: print(x) \n x = x + 1

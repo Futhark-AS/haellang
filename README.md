@@ -1,6 +1,6 @@
 # The Hællang Programming Language
 
-[Creators](https://github.com/Futhark-AS/haellang/blob/main/CONTRIBUTORS.md)
+### [Creators](https://github.com/Futhark-AS/haellang/blob/main/CONTRIBUTORS.md)
 
 ![Hællang Logo](logo/Haellang_logo.png)
 
@@ -18,52 +18,9 @@
 
 Now you can you write a .haellae file in Hællang and run it using the command: `python haellang.py path-to-file/file.haellae`
 
-> # Semantics
+# [Click here for semantics](https://github.com/Futhark-AS/haellang/blob/main/SEMANTICS.md)
 
-```python
-reserved = {
-    'plussær':'PLUS',
-    'minusær':'MINUS',
-    'gangær':'TIMES',
-    'delær':'DIVIDE',
-    'mådda-med':'MOD',
-    'ære-samma-som':'EQUALS',
-    'hællæ':'LPAREN',
-    'prekæs':'RPAREN',
-    'småære-enn':'LT',
-    'mere-enn':'GT',
-    'er-prikk-lik':'EQ',
-    'dersom-atter':'IF',
-    'så':'THEN',
-    'ente-gjør-no':'PASS',
-    'ellers':'ELSE',
-    'åsså-æru-ferdig':'END_OF_IF_THEN_ELSE',
-    'imens':'WHILE',
-    'ta-åsså-gjør':'DO',
-    'åsså-gjøru-det-igjen':'END_OF_WHILE',
-    'spøtt-ut':'PRINT',
-    'klart-det':'TRUE',
-    'ente-rekti':'FALSE',
-    'gi-dæ':'BREAK',
-    'en-bråtæ-beståænes-av':'START_OF_LIST',
-    'å':'LIST_ITEM_SEPARATOR',
-    'å-det-var-det':'END_OF_LIST',
-    'legg-te':'PUSH',
-    'i-bråtæn':'IN_LIST',
-    'græbb-fra':'POP',
-    'plass-nummer':'ARRAY_INDEX',
-    'kåmma':'COMMA',
-    'e-orlbok-beståænes-av':'START_OF_DICT',
-    'å-så-var-orlboka-færi':'END_OF_DICT',
-    'betyænes':'DICT_PAIR_SEPARATOR',
-    'slå-opp':'DICT_LOOKUP',
-    'i-orlboka':'IN_DICT',
-    'størlsen-a':'LENGTH',
-    'fjærn':'DICT_REMOVE',
-}
-```
-
-> ##### Example Code
+##### Example Code
 
 ```
 n ære samma som 2.

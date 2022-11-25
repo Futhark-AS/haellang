@@ -1,0 +1,9 @@
+Hællang; Python
+en-bråtæ-beståænes-av; [
+x å y; x, y
+å_det_var_det; ]
+x legg-te y; x.append(y)
+græbb-fra x; x.pop()
+plass-nummer i i-bråtæn x; x[i]
+størlsen-a x; len(x)
+x ære-samma-som en-bråtæ-beståænes-av x å y å_det_var_det; x = [x, y]
