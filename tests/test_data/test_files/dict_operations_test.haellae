@@ -1,0 +1,17 @@
+x ære-samma-som e-orlbok-beståænes-av
+    "1" betyænes 1 å
+    "2" betyænes hællæ 2 plussær 2 prekæs å
+    "3" betyænes 3 gangær 3 å
+    "4" betyænes hællæ 3 plussær 1 prekæs gangær 4
+å-så-var-orlboka-færi.
+
+spøtt-ut x.
+
+spøtt-ut slå-opp "1" i-orlboka x.
+spøtt-ut hællæ slå-opp "2" i-orlboka x plussær slå-opp "3" i-orlboka x prekæs.
+
+fjærn "4" i-orlboka x.
+spøtt-ut x.
+
+legg-te "4" betyænes "This is now a string wowzers" i-orlboka x.
+spøtt-ut x.

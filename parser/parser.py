@@ -1,6 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
 import re
+import sys 
 
 reserved = {
     'plussær':'PLUS',
@@ -30,19 +31,28 @@ reserved = {
     'å':'LIST_ITEM_SEPARATOR',
     'å-det-var-det':'END_OF_LIST',
     'legg-te':'PUSH',
-    'på':'IN',
+    'i-bråtæn':'IN_LIST',
     'græbb-fra':'POP',
     'plass-nummer':'ARRAY_INDEX',
+    'en-fungsjon':'FUNCTION',
+    'såm-brukær' : 'WITH_PARAMS',    
+    'såm-gjør': 'START_OF_FUNCTION',
+    'åså-varn-færi' : 'END_OF_FUNCTION',
     'kjør':'RUN',
+    'med':'WITH',
     'gi-tilbake':'RETURN',
-    'han':'FUNCTION',
-    'siær-atter': 'START_OF_FUNCTION',
-    'ferdig' : 'END_OF_FUNCTION',
-    'med' : 'WITH_PARAMS',    
+    'kåmma':'COMMA',
+    'e-orlbok-beståænes-av':'START_OF_DICT',
+    'å-så-var-orlboka-færi':'END_OF_DICT',
+    'betyænes':'DICT_PAIR_SEPARATOR',
+    'slå-opp':'DICT_LOOKUP',
+    'i-orlboka':'IN_DICT',
+    'størlsen-a':'LENGTH',
+    'fjærn':'DICT_REMOVE',
 }
 
 tokens = [ 
-    'NAME','NUMBER', 'STRING', 'FLOAT',
+    'NAME','NUMBER', 'STRING', 
     'END_OF_STATEMENT',
 ] + list(set(reserved.values()))
 
@@ -57,12 +67,6 @@ def t_NAME(t):
     r'[a-zA-ZæøåÆØÅ_][a-zA-ZæøåÆØÅ0-9_]*'
     return t
 
-def t_FLOAT(t):
-    r'\d+\.\d+'
-    print(t)
-    t.value = float(t.value)
-    return t
-
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)    
@@ -73,11 +77,14 @@ def t_STRING(t):
     t.value = t.value[1:-1]
     return t
 
-def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+def t_newline(t):
+    r'\n'
+    t.lexer.lineno += 1
 
-t_ignore = ' \t\n'
+def t_error(t):
+    raise(ValueError(f'Ulovli bokstav {t.value[0]}'))
+
+t_ignore = ' \t'
 
 lexer = lex.lex(reflags=re.UNICODE|re.VERBOSE)
 
@@ -85,6 +92,8 @@ precedence = (
     ('nonassoc', 'LT', 'GT', 'EQ'),  # Nonassociative operators
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
+    ('nonassoc', 'COMMA'),
+    ('nonassoc', 'IN_DICT', 'IN_LIST'),
 )
 
 def p_expression_binop(p):
@@ -107,9 +116,33 @@ def p_expression_number(p):
     '''expression : NUMBER'''
     p[0] = ('literal-expression',p[1])
 
+def p_expression_float(p):
+    '''expression : NUMBER COMMA NUMBER'''
+    p[0] = ('literal-expression',float(str(p[1])+'.'+str(p[3])))
+
 def p_expression_string(p):
     '''expression : STRING'''
     p[0] = ('literal-expression', p[1])
+    
+def p_expression_dict_empty(p):
+    '''expression : START_OF_DICT END_OF_DICT'''
+    p[0] = ('dict-expression',)
+    
+def p_expression_dict(p):
+    '''expression : START_OF_DICT dict-body END_OF_DICT'''
+    p[0] = ('dict-expression', p[2])
+    
+def p_expression_dict_body_recursive(p):
+    '''dict-body : dict-body  LIST_ITEM_SEPARATOR expression DICT_PAIR_SEPARATOR expression'''
+    p[0] = ('dict-body', p[1], p[3], p[5])
+
+def p_expression_dict_body_base(p):
+    '''dict-body : expression DICT_PAIR_SEPARATOR expression'''
+    p[0] = ('dict-body', p[1], p[3])
+    
+def p_expression_list_empty(p):
+    '''expression : START_OF_LIST END_OF_LIST'''
+    p[0] = ('list-expression',)
 
 def p_expression_list(p):
     '''expression : START_OF_LIST list-body END_OF_LIST'''
@@ -123,10 +156,6 @@ def p_expression_list_body_base(p):
     '''list-body : expression'''
     p[0] = ('list-body', p[1])
     
-def p_expression_float(p):
-    '''expression : FLOAT'''
-    p[0] = ('literal-expression', p[1])
-
 def p_expression_true(p):
     '''expression : TRUE'''
     p[0] = ('literal-expression', True)
@@ -167,46 +196,25 @@ def p_empty(p):
 '''
 ----------------- functions start ----------------- bare for oversikt
 '''
-def p_function_assign(p):
-    'statement : FUNCTION NAME WITH_PARAMS parameters START_OF_FUNCTION statement RETURN expression END_OF_FUNCTION'
-    p[0] = ('assign-function', p[2], p[4], p[6], p[8])
+def p_function_expression(p):
+    'expression : FUNCTION WITH_PARAMS parameters START_OF_FUNCTION statement END_OF_FUNCTION'
+    p[0] = ('function-expression', p[3], p[5])
 
-def p_function_assign_no_params_no_return(p):
-    'statement : FUNCTION NAME START_OF_FUNCTION statement END_OF_FUNCTION'
-    p[0] = ('assign-function', p[2], ('literal-expression', None), p[4], ('literal-expression', None))
+def p_function_expression_no_params(p):
+    'expression : FUNCTION START_OF_FUNCTION statement END_OF_FUNCTION'
+    p[0] = ('function-expression', p[3])
 
-def p_function_assign_no_params(p):
-    'statement : FUNCTION NAME START_OF_FUNCTION statement RETURN expression END_OF_FUNCTION'
-    p[0] = ('assign-function', p[2], ('literal-expression', None), p[4], p[6])
+def p_function_application(p):
+    'expression : RUN NAME WITH_PARAMS list-body END_OF_STATEMENT'
+    p[0] = ('function-application-expression', p[2], p[4])
 
-def p_function_assign_no_return(p):
-    'statement : FUNCTION NAME WITH_PARAMS parameters START_OF_FUNCTION statement END_OF_FUNCTION'
-    p[0] = ('assign-function', p[2], p[4], p[6], ('literal-expression', None))
+def p_function_application_no_args(p):
+    'expression : RUN NAME END_OF_STATEMENT'
+    p[0] = ('function-application-expression', p[2])
 
-def p_function_assign_no_body(p):
-    'statement : FUNCTION NAME WITH_PARAMS parameters START_OF_FUNCTION RETURN expression END_OF_FUNCTION'
-    p[0] = ('assign-function', p[2], p[4], ('literal-expression', None), p[7])
-
-def p_function_assign_no_params_no_body(p):
-    'statement : FUNCTION NAME START_OF_FUNCTION RETURN expression END_OF_FUNCTION'
-    p[0] = ('assign-function', p[2], ('literal-expression', None), ('literal-expression', None), p[5])
-
-def p_function_run(p):
-    'statement : RUN NAME WITH_PARAMS list-body END_OF_STATEMENT'
-    p[0] = ('run-function', p[2], p[4])
-
-def p_function_run_no_args(p):
-    'statement : RUN NAME END_OF_STATEMENT'
-    p[0] = ('run-function', p[2], ('literal-expression', None))
-
-
-def p_function_run_and_return(p):
-    'expression : RUN NAME WITH_PARAMS list-body'
-    p[0] = ('run-function', p[2], p[4])
-
-def p_function_run_and_return_no_args(p):
-    'expression : RUN NAME'
-    p[0] = ('run-function', p[2], ('literal-expression', None))
+def p_return_statement(p):
+    'statement : RETURN expression'
+    p[0] = ('return-expression', p[2])
 
 '''
 ----------------- functions end -----------------
@@ -228,7 +236,7 @@ def p_expression_print(p):
     p[0] = ('print-function', p[2])
 
 def p_expression_push(p):
-    'expression : PUSH expression IN expression'
+    'expression : PUSH expression IN_LIST expression'
     p[0] = ('push-function', p[2], p[4])
 
 def p_expression_pop(p):
@@ -236,8 +244,24 @@ def p_expression_pop(p):
     p[0] = ('pop-function', p[2])
 
 def p_expression_array_index(p):
-    'expression : ARRAY_INDEX expression IN expression'
+    'expression : ARRAY_INDEX expression IN_LIST expression'
     p[0] = ('index-expression', p[2], p[4])
+    
+def p_expression_dict_lookup(p):
+    'expression : DICT_LOOKUP expression IN_DICT expression'
+    p[0] = ('lookup-expression', p[2], p[4])
+
+def p_expression_dict_add(p):
+    'expression : PUSH expression DICT_PAIR_SEPARATOR expression IN_DICT expression'
+    p[0] = ('add-expression', p[2], p[4], p[6])
+
+def p_expression_dict_remove(p):
+    'expression : DICT_REMOVE expression IN_DICT expression'
+    p[0] = ('remove-expression', p[2], p[4])
+    
+def p_expression_length(p):
+    'expression : LENGTH expression'
+    p[0] = ('length-function', p[2])
 
 def p_statement_pass(p):
     'statement : PASS END_OF_STATEMENT'
@@ -245,16 +269,18 @@ def p_statement_pass(p):
     
 def p_error(p):
     if p is not None: 
-        print(f"\033[91mUnexpected Token '{p.value}'\033[0m")
+        raise ValueError(f"\033[91mUnexpected Token '{p.value} on line {p.lineno}'\033[0m") from None
     else:
-        print('Unexpected end of input')
+        raise(ValueError('Unexpected end of input'))
         
 # Error rule for syntax errors
 # Build the parser
 parser = yacc.yacc(start='statement', debug=True)
-# pprint.pprint(out)
+    # pprint.pprint(out)
 
 def parse(script):
+    sys.tracebacklimit = 0
+    lexer.lineno = 1
     return parser.parse(script)
 
 # from interpreter import interpret

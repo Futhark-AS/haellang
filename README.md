@@ -1,5 +1,7 @@
 # The Hællang Programming Language
 
+[Creators](https://github.com/Futhark-AS/haellang/blob/main/CONTRIBUTORS.md)
+
 ![Hællang Logo](logo/Haellang_logo.png)
 
 #### The number one programming language for østfoldingær
@@ -18,22 +20,48 @@ Now you can you write a .haellae file in Hællang and run it using the command: 
 
 > # Semantics
 
-| Hællang Code                                        | Python Interpretation                                      |
-| --------------------------------------------------- | ---------------------------------------------------------- |
-| .                                                   | END_OF_STATEMENT                                           |
-| dersom atter .. så .. ellers så .. åsså æru ferdig. | IF .. THEN .. ELSE THEN .. END_OF_IF_ELSE END_OF_STATEMENT |
-| gi dæ                                               | BREAK                                                      |
-| dra tebake deru kom fra                             | END_OF_FUNCTION                                            |
-| ta meræ                                             | RETURN                                                     |
-| imens .. ta åsså gjør .. åsså gjøru det igjen       | WHILE .. DO .. END_OF_WHILE                                |
-| spøtt ut                                            | PRINT                                                      |
-| mere enn, småære enn, ære samma som                 | GT, LT, EQUALS                                             |
-| plussær, minusær, delær, gangær, mådda med          | PLUS, MINUS, TIMES, DIVIDE, MOD                            |
-| hællæ, prekæs                                       | LPAREN, RPAREN                                             |
-| ær prikk lik                                        | EQ                                                         |
-| ente gjør no                                        | PASS                                                       |
-| klart det                                           | TRUE                                                       |
-| ente rekti                                          | FALSE                                                      |
+```python
+reserved = {
+    'plussær':'PLUS',
+    'minusær':'MINUS',
+    'gangær':'TIMES',
+    'delær':'DIVIDE',
+    'mådda-med':'MOD',
+    'ære-samma-som':'EQUALS',
+    'hællæ':'LPAREN',
+    'prekæs':'RPAREN',
+    'småære-enn':'LT',
+    'mere-enn':'GT',
+    'er-prikk-lik':'EQ',
+    'dersom-atter':'IF',
+    'så':'THEN',
+    'ente-gjør-no':'PASS',
+    'ellers':'ELSE',
+    'åsså-æru-ferdig':'END_OF_IF_THEN_ELSE',
+    'imens':'WHILE',
+    'ta-åsså-gjør':'DO',
+    'åsså-gjøru-det-igjen':'END_OF_WHILE',
+    'spøtt-ut':'PRINT',
+    'klart-det':'TRUE',
+    'ente-rekti':'FALSE',
+    'gi-dæ':'BREAK',
+    'en-bråtæ-beståænes-av':'START_OF_LIST',
+    'å':'LIST_ITEM_SEPARATOR',
+    'å-det-var-det':'END_OF_LIST',
+    'legg-te':'PUSH',
+    'i-bråtæn':'IN_LIST',
+    'græbb-fra':'POP',
+    'plass-nummer':'ARRAY_INDEX',
+    'kåmma':'COMMA',
+    'e-orlbok-beståænes-av':'START_OF_DICT',
+    'å-så-var-orlboka-færi':'END_OF_DICT',
+    'betyænes':'DICT_PAIR_SEPARATOR',
+    'slå-opp':'DICT_LOOKUP',
+    'i-orlboka':'IN_DICT',
+    'størlsen-a':'LENGTH',
+    'fjærn':'DICT_REMOVE',
+}
+```
 
 > ##### Example Code
 
