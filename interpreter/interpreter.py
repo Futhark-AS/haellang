@@ -54,11 +54,27 @@ def interpret(ast):
                     args = []
                 f = assignment_store[ast[1]]
                 return f(args)
+            
+            case 'function-import-application-expression': # Run function and return
+                if len(ast) == 4:
+                    args = interpret_internal(ast[3], assignment_store)
+                    if(len(args)) == 1:
+                        args = args[0]
+                else:
+                    args = []
+                method = getattr(assignment_store[ast[1]], ast[2])
+                return method(args)
 
             case 'parameters':
                 if len(ast) == 3:
                     return [ast[1]] + interpret_internal(ast[2], assignment_store)
                 return [ast[1]]
+            
+            case 'import-statement':
+                method_name = ast[2]
+                path_to_method = ast[1]
+                method = importlib.import_module(path_to_method)
+                assignment_store[method_name] = method
 
             
             case 'expression-statement':
