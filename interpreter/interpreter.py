@@ -22,45 +22,42 @@ def interpret(ast):
     stack = list()
 
     def interpret_internal(ast, assignment_store):
+        # import pprint
+        # pprint.pprint(ast)
         match ast[0]:
             case 'recursive-statement':
                 for i in range(2):
                     code = interpret_internal(ast[i+1], assignment_store)
-                    match code:
-                        case 'BREAK':
-                            return 'BREAK'
-                        case _:
-                            pass
+                    if code:
+                        match code[0]:
+                            case 'BREAK':
+                                return code
+                            case 'RETURN':
+                                return code
             case 'assign-statement':
                 assignment_store[ast[1]] = interpret_internal(ast[2], assignment_store)
                 
-            case 'assign-function':
-                parameter_list = interpret_internal(ast[2], None)
-                if parameter_list is None:
-                    parameter_list = list()
-                assignment_store[ast[1]] = {
-                    'parameter-list': parameter_list,
-                    'body': ast[3],
-                    'return-expression': ast[4]
-                }
+            case 'function-expression':
+                if len(ast)==3:
+                    parameter_list = interpret_internal(ast[1], None)
+                    function_body = ast[2]
+                else:
+                    parameter_list = []
+                    function_body = ast[1]
+                return function(parameter_list, assignment_store, function_body)
 
-            case 'run-function': # Run function and return
-                function = assignment_store[ast[1]]
-                param_dict = dict()
-                argument_list = interpret_internal(ast[2], assignment_store)
-                if argument_list is not None:
-                    for key, value in zip(function['parameter-list'], argument_list):
-                        param_dict[key] = value
-
-                local_dict = dict(assignment_store, **param_dict) # Merge the two dictionaries
-                interpret_internal(function['body'], local_dict)
-                return interpret_internal(function['return-expression'], local_dict)
+            case 'function-application-expression': # Run function and return
+                if len(ast) == 3:
+                    args = interpret_internal(ast[2], assignment_store)
+                else:
+                    args = []
+                f = assignment_store[ast[1]]
+                return f(args)
 
             case 'parameters':
                 if len(ast) == 3:
                     return [ast[1]] + interpret_internal(ast[2], assignment_store)
                 return [ast[1]]
-            # Trenger man en case for 'empty'?
 
             
             case 'expression-statement':
@@ -173,15 +170,26 @@ def interpret(ast):
             case 'while-statement':
                 while interpret_internal(ast[1], assignment_store):
                     code = interpret_internal(ast[2], assignment_store)
-                    match code:
-                        case 'BREAK':
-                            break
-                        case _:
-                            pass
+                    if code:
+                        match code[0]:
+                            case 'BREAK':
+                                return code
+                            case 'RETURN':
+                                return code
             case 'break-statement':
-                return 'BREAK'
+                return ( 'BREAK', None )
+            case 'return-statement':
+                return ( 'RETURN', interpret_internal(ast[1], assignment_store) )
             case _:
                 raise(ValueError(f'Illegal AST Node {ast[0]}'))
+
+    def function(params, assignment_store : dict, statement):
+        environment = assignment_store.copy()
+        def runnable_function(args):
+            for (param, arg) in zip(params, args):
+                environment[param] = arg
+            return interpret_internal(statement, environment)
+        return runnable_function
 
     interpret_internal(ast, assignment_store)
 

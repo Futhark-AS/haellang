@@ -180,21 +180,20 @@ def p_statement_if(p):
     'statement : IF expression THEN statement ELSE THEN statement END_OF_IF_THEN_ELSE END_OF_STATEMENT'
     p[0] = ('if-statement', p[2], p[4], p[7])
 
-def p_variable_parameters(p):
+def p_parameters_recursive(p):
     'parameters : NAME LIST_ITEM_SEPARATOR parameters'
     p[0] = ('parameters', p[1], p[3])
 
-def p_variable_parameters_base(p):
-    '''parameters : NAME
-                  | empty'''
+def p_parameters_base(p):
+    '''parameters : NAME'''
     p[0] = ('parameters', p[1])
 
-def p_empty(p):
-    'empty :'
-    p[0] = None
+# def p_empty(p):
+#     'empty :'
+#     p[0] = None
 
 '''
------------------ functions start ----------------- bare for oversikt
+----------------- functions start ----------------- 
 '''
 def p_function_expression(p):
     'expression : FUNCTION WITH_PARAMS parameters START_OF_FUNCTION statement END_OF_FUNCTION'
@@ -205,16 +204,16 @@ def p_function_expression_no_params(p):
     p[0] = ('function-expression', p[3])
 
 def p_function_application(p):
-    'expression : RUN NAME WITH_PARAMS list-body END_OF_STATEMENT'
+    'expression : RUN NAME WITH list-body'
     p[0] = ('function-application-expression', p[2], p[4])
 
 def p_function_application_no_args(p):
-    'expression : RUN NAME END_OF_STATEMENT'
+    'expression : RUN NAME'
     p[0] = ('function-application-expression', p[2])
 
 def p_return_statement(p):
-    'statement : RETURN expression'
-    p[0] = ('return-expression', p[2])
+    'statement : RETURN expression END_OF_STATEMENT'
+    p[0] = ('return-statement', p[2])
 
 '''
 ----------------- functions end -----------------
@@ -279,8 +278,11 @@ parser = yacc.yacc(start='statement', debug=True)
     # pprint.pprint(out)
 
 def parse(script):
+    # import pprint
     sys.tracebacklimit = 0
     lexer.lineno = 1
+    # out = parser.parse(script)
+    # pprint.pprint(out)
     return parser.parse(script)
 
 # from interpreter import interpret
