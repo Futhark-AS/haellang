@@ -16,7 +16,9 @@ hyphenMap = {
     'åsså gjøru det igjen': 'åsså-gjøru-det-igjen',
     'klart det': 'klart-det',
     'ente rekti': 'ente-rekti',
-    'gi dæ':'gi-dæ'
+    'gi dæ':'gi-dæ',
+    'gi tilbake': 'gi-tilbake',
+    'siær atter': 'siær-atter',
 }
 
 def addHyphens(script, hyphenMap):
