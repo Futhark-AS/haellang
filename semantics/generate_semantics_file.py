@@ -20,7 +20,11 @@ semantic_classes = {
 
 semantics_file = open("../semantics.md", "w")
 
+semantics_file.write("# Table of Contents\n")
 for (class_name, class_df) in semantic_classes.items():
-    semantics_file.write(f"## {class_name}\n")
+    semantics_file.write(f"1. [{class_name.replace(' ', '-')}](#{class_name.replace(' ', '-')})\n")
+
+for (class_name, class_df) in semantic_classes.items():
+    semantics_file.write(f"## <a name='{class_name}'>{class_name}</a>\n")
     semantics_file.write(markdownTable(class_df.to_dict(orient='records')).setParams(row_sep = 'markdown', padding_width = 10, quote = False).getMarkdown())
     semantics_file.write("\n")
