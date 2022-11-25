@@ -135,7 +135,7 @@ def interpret(ast):
                 if not type(index) == int:
                     raise(TypeError('Du kanke titte på en plass som ente er et tall uten kåmma'))
                 if not type(list_ref) == list:
-                    raise(TypeError('Du kanke utifra noe som ente er e bråtæ'))
+                    raise(TypeError('Du kanke ta utifra noe som ente er e bråtæ'))
                 if index < 1 or index > len(list_ref):
                     raise(IndexError(f'Dæven æ mårr! Klaræru ente å telle eller? Ærnte en plass {index} i den bråtæn.'))
                 return list_ref[index-1]
