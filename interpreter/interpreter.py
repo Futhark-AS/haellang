@@ -195,7 +195,10 @@ def interpret(ast):
                 del dict_ref[key] 
                 
             case 'len-function':
-                pass
+                ref = interpret_internal(ast[1], assignment_store)
+                if not type(ref) == list or not type(ref) == str:
+                    raise(TypeError('Du kanke finne lengden på noe som ente er e bråtæ eller e streng'))
+                return len(ref)
             
             case 'pass-statement':
                 pass
