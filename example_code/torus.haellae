@@ -3,16 +3,16 @@ hent-ut-pytonslange-funksjon "math" å-kallen-for matte i-samma-slengen.
 hent-ut-pytonslange-funksjon "time" å-kallen-for tid i-samma-slengen.
 
 
-theta_spacing ære-samma-som 0 kåmma 07.
-phi_spacing ære-samma-som 0 kåmma 02.
+theta_spacing ære-samma-som 0 kåmma 04.
+phi_spacing ære-samma-som 0 kåmma 01.
 PI ære-samma-som 3 kåmma 141592653589793.
 
-screen_width ære-samma-som 30.
-screen_height ære-samma-som 30.
+screen_width ære-samma-som 50.
+screen_height ære-samma-som 50.
 
 R1 ære-samma-som 1.
 R2 ære-samma-som 2.
-K2 ære-samma-som 10.
+K2 ære-samma-som 100.
 
 K1 ære-samma-som screen_width gangær K2 gangær 3 delær hællæ 8 gangær hællæ R1 plussær R2 prekæs prekæs.
 
@@ -52,7 +52,7 @@ render_frame ære-samma-som en-fungsjon såm-brukær A å B såm-gjør
     cosB ære-samma-som kjør matte dått cos med B å-det-var-det.
     sinB ære-samma-som kjør matte dått sin med B å-det-var-det.
 
-    output ære-samma-som kjør create_2d_array med screen_width å screen_height å " " å-det-var-det.
+    output ære-samma-som kjør create_2d_array med screen_width å screen_height å "  " å-det-var-det.
     zbuffer ære-samma-som kjør create_2d_array med screen_width å screen_height å 0 å-det-var-det.
 
     theta ære-samma-som 0.
@@ -108,7 +108,7 @@ render_frame ære-samma-som en-fungsjon såm-brukær A å B såm-gjør
                 dersom-atter ooz mere-enn plass-nummer jZ i-bråtæn iZ å-det-var-det så
                     endre plass-nummer jZ i-bråtæn iZ te ooz å-det-var-det.
                     luminance_index ære-samma-som kjør matte dått ceil med L gangær 8 å-det-var-det.
-                    luminance_array ære-samma-som en-bråtæ-beståænes-av "." å "," å "-" å "~" å ":" å ";" å "=" å "!" å "*" å "#" å "$" å "@" å-det-var-det.
+                    luminance_array ære-samma-som en-bråtæ-beståænes-av ".." å ",," å "--" å "~~" å "::" å ";;" å "==" å "!!" å "**" å "##" å "$$" å "@@" å-det-var-det.
                     luminance_value ære-samma-som plass-nummer luminance_index i-bråtæn luminance_array å-det-var-det.
                     endre plass-nummer jO i-bråtæn iO te luminance_value å-det-var-det.                
                 ellers så
@@ -137,7 +137,7 @@ speed ære-samma-som 20.
 imens iterations småære-enn 1000 ta-åsså-gjør
     kjør os dått system med "clear" å-det-var-det.
     kjør render_frame med u plussær 1 å v å-det-var-det.
-    kjør tid dått sleep med 0 kåmma 0001 å-det-var-det.
+    kjør tid dått sleep med 0 kåmma 2 å-det-var-det.
     u ære-samma-som u plussær 1 gangær PI gangær speed delær 360.
     v ære-samma-som v plussær 1 gangær PI gangær speed delær 360.
 
