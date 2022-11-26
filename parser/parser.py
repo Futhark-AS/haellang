@@ -249,7 +249,7 @@ def p_expression_print(p):
     'expression : PRINT expression'
     p[0] = ('print-function', p[2])
     
-def p_expression_print_with_newline(p):
+def p_expression_print_without_newline(p):
     'expression : PRINT_WITHOUT_NEWLINE expression'
     p[0] = ('print-without-newline-function', p[2])
 
