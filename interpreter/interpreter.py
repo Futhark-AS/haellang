@@ -224,6 +224,9 @@ def interpret(ast):
             
             case 'return-statement':
                 return ( 'RETURN', interpret_internal(ast[1], assignment_store) )
+
+            case 'empty':
+                return 
             
             case _:
                 raise(ValueError(f'Illegal AST Node {ast[0]}'))

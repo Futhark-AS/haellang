@@ -96,8 +96,10 @@ t_ignore = ' \t'
 lexer = lex.lex(reflags=re.UNICODE|re.VERBOSE)
 
 precedence = (
+    ('left', 'DICT_PAIR_SEPARATOR'),
+    ('left', 'LIST_ITEM_SEPARATOR'),
     ('nonassoc', 'LT', 'GT', 'EQ'),  # Nonassociative operators
-    ('left', 'PLUS', 'MINUS'),
+    ('left', 'PLUS', 'MINUS', 'MOD'),
     ('left', 'TIMES', 'DIVIDE'),
     ('nonassoc', 'COMMA'),
     ('nonassoc', 'IN_DICT', 'IN_LIST'),
@@ -176,15 +178,19 @@ def p_expression_variable(p):
     p[0] = ('variable-expression',p[1])
 
 def p_statement_recursive(p):
-    'statement : statement statement'
+    'statements : statement statements'
     p[0] = ('recursive-statement', p[1], p[2])
+
+def p_statement_base(p):
+    'statements : empty'
+    p[0] = ('empty', )
 
 def p_statement_expression(p):
     'statement : expression END_OF_STATEMENT'
     p[0] = ('expression-statement', p[1])
 
 def p_statement_if(p):
-    'statement : IF expression THEN statement ELSE THEN statement END_OF_IF_THEN_ELSE END_OF_STATEMENT'
+    'statement : IF expression THEN statements ELSE THEN statements END_OF_IF_THEN_ELSE END_OF_STATEMENT'
     p[0] = ('if-statement', p[2], p[4], p[7])
 
 def p_parameters_recursive(p):
@@ -195,23 +201,23 @@ def p_parameters_base(p):
     '''parameters : NAME'''
     p[0] = ('parameters', p[1])
 
-# def p_empty(p):
-#     'empty :'
-#     p[0] = None
+def p_empty(p):
+    'empty :'
+    p[0] = None
 
 '''
 ----------------- functions start ----------------- 
 '''
 def p_function_expression(p):
-    'expression : FUNCTION WITH_PARAMS parameters START_OF_FUNCTION statement END_OF_FUNCTION'
+    'expression : FUNCTION WITH_PARAMS parameters START_OF_FUNCTION statements END_OF_FUNCTION'
     p[0] = ('function-expression', p[3], p[5])
 
 def p_function_expression_no_params(p):
-    'expression : FUNCTION START_OF_FUNCTION statement END_OF_FUNCTION'
+    'expression : FUNCTION START_OF_FUNCTION statements END_OF_FUNCTION'
     p[0] = ('function-expression', p[3])
 
 def p_function_application(p):
-    'expression : RUN NAME WITH list-body'
+    'expression : RUN NAME WITH list-body END_OF_LIST'
     p[0] = ('function-application-expression', p[2], p[4])
 
 def p_function_application_no_args(p):
@@ -219,7 +225,7 @@ def p_function_application_no_args(p):
     p[0] = ('function-application-expression', p[2])
 
 def p_import_function_application(p):
-    'expression : RUN NAME IMPORT_FUNCTION_SEPARATOR NAME WITH list-body'
+    'expression : RUN NAME IMPORT_FUNCTION_SEPARATOR NAME WITH list-body END_OF_LIST'
     p[0] = ('function-import-application-expression', p[2], p[4], p[6])
     
 def p_import_function_application_no_args(p):
@@ -242,11 +248,11 @@ def p_statement_break(p):
     p[0] = ('break-statement',)
 
 def p_statement_while(p):
-    'statement : WHILE expression DO statement END_OF_WHILE END_OF_STATEMENT'
+    'statement : WHILE expression DO statements END_OF_WHILE END_OF_STATEMENT'
     p[0] = ('while-statement', p[2], p[4])
     
 def p_expression_print(p):
-    'expression : PRINT expression'
+    'statement : PRINT expression END_OF_STATEMENT'
     p[0] = ('print-function', p[2])
     
 def p_expression_print_without_newline(p):
@@ -254,15 +260,15 @@ def p_expression_print_without_newline(p):
     p[0] = ('print-without-newline-function', p[2])
 
 def p_expression_push(p):
-    'expression : PUSH expression IN_LIST expression'
+    'expression : PUSH expression IN_LIST expression END_OF_LIST'
     p[0] = ('push-function', p[2], p[4])
 
 def p_expression_pop(p):
-    'expression : POP expression'
+    'expression : POP expression END_OF_LIST'
     p[0] = ('pop-function', p[2])
 
 def p_expression_array_index(p):
-    'expression : ARRAY_INDEX expression IN_LIST expression'
+    'expression : ARRAY_INDEX expression IN_LIST expression END_OF_LIST'
     p[0] = ('index-expression', p[2], p[4])
     
 def p_expression_change_array_index(p):
@@ -270,24 +276,24 @@ def p_expression_change_array_index(p):
     p[0] = ('change-index-expression', p[3], p[5], p[7])
     
 def p_expression_dict_lookup(p):
-    'expression : DICT_LOOKUP expression IN_DICT expression'
+    'expression : DICT_LOOKUP expression IN_DICT expression END_OF_LIST'
     p[0] = ('lookup-expression', p[2], p[4])
 
 def p_expression_dict_add(p):
-    'expression : PUSH expression DICT_PAIR_SEPARATOR expression IN_DICT expression'
+    'expression : PUSH expression DICT_PAIR_SEPARATOR expression IN_DICT expression END_OF_LIST'
     p[0] = ('add-expression', p[2], p[4], p[6])
 
 def p_expression_dict_remove(p):
-    'expression : DICT_REMOVE expression IN_DICT expression'
+    'expression : DICT_REMOVE expression IN_DICT expression END_OF_LIST'
     p[0] = ('remove-expression', p[2], p[4])
     
 def p_expression_length(p):
-    'expression : LENGTH expression'
+    'expression : LENGTH expression END_OF_LIST'
     p[0] = ('length-function', p[2])
     
 # Import python's built-in functions
 def p_statement_import(p):
-    'expression : IMPORT STRING AS NAME END_OF_IMPORT'
+    'statement : IMPORT STRING AS NAME END_OF_IMPORT END_OF_STATEMENT'
     p[0] = ('import-statement', p[2], p[4])
 
 def p_statement_pass(p):
@@ -302,7 +308,7 @@ def p_error(p):
         
 # Error rule for syntax errors
 # Build the parser
-parser = yacc.yacc(start='statement', debug=True)
+parser = yacc.yacc(start='statements', debug=True)
     # pprint.pprint(out)
 
 def parse(script):
