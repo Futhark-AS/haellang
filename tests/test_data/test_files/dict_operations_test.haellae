@@ -7,11 +7,11 @@ x ære-samma-som e-orlbok-beståænes-av
 
 spøtt-ut x.
 
-spøtt-ut slå-opp "1" i-orlboka x.
-spøtt-ut hællæ slå-opp "2" i-orlboka x plussær slå-opp "3" i-orlboka x prekæs.
+spøtt-ut slå-opp "1" i-orlboka x å-det-var-det.
+spøtt-ut hællæ slå-opp "2" i-orlboka x å-det-var-det plussær slå-opp "3" i-orlboka x å-det-var-det prekæs.
 
-fjærn "4" i-orlboka x.
+fjærn "4" i-orlboka x å-det-var-det.
 spøtt-ut x.
 
-legg-te "4" betyænes "This is now a string wowzers" i-orlboka x.
+legg-te "4" betyænes "This is now a string wowzers" i-orlboka x å-det-var-det.
 spøtt-ut x.
