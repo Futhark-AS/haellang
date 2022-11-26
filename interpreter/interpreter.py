@@ -58,12 +58,10 @@ def interpret(ast):
             case 'function-import-application-expression': # Run function and return
                 if len(ast) == 4:
                     args = interpret_internal(ast[3], assignment_store)
-                    if(len(args)) == 1:
-                        args = args[0]
                 else:
                     args = []
                 method = getattr(assignment_store[ast[1]], ast[2])
-                return method(args)
+                return method(*args)
 
             case 'parameters':
                 if len(ast) == 3:
