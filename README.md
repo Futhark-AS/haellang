@@ -22,6 +22,12 @@ Now you can you write a .haellae file in Hællang and run it using the command: 
 
 ##### Example Code
 
+###### example_code/torus.haellae by Simen Sandhaug
+
+![Donut](https://s1.gifyu.com/images/c962105be7b6c749f0ab16e7f1b20d9c-_1_.gif)
+
+###### example_code/primes.haellae by Halvor Linder Henriksen
+
 ```
 n ære samma som 2.
 imens n småære enn 100 ta åsså gjør
