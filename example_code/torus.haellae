@@ -1,0 +1,113 @@
+hent-ut-pytonslange-funksjon "os" å-kallen-for os i-samma-slengen.
+hent-ut-pytonslange-funksjon "math" å-kallen-for matte i-samma-slengen.
+
+theta_spacing ære-samma-som 0 kåmma 07.
+phi_spacing ære-samma-som 0 kåmma 02.
+PI ære-samma-som 3 kåmma 141592653589793.
+
+screen_width ære-samma-som 30.
+screen_height ære-samma-som 30.
+
+R1 ære-samma-som 1.
+R2 ære-samma-som 2.
+K2 ære-samma-som 5.
+
+K1 ære-samma-som screen_width gangær K2 gangær 3 delær hællæ 8 gangær hællæ R1 plussær R2 prekæs prekæs.
+
+create_2d_array ære-samma-som en-fungsjon såm-brukær rows å cols å value såm-gjør
+    i ære-samma-som 0.
+    array ære-samma-som en-bråtæ-beståænes-av  å-det-var-det.
+    imens i småære-enn rows ta-åsså-gjør
+        j ære-samma-som 0.
+        temp ære-samma-som en-bråtæ-beståænes-av  å-det-var-det.
+        imens j småære-enn cols ta-åsså-gjør
+            legg-te value i-bråtæn temp.
+            j ære-samma-som j plussær 1.
+        åsså-gjøru-det-igjen.
+        legg-te temp i-bråtæn array.
+        i ære-samma-som i plussær 1.
+    åsså-gjøru-det-igjen.
+    gi-tilbake array.
+åså-varn-færi.
+
+print_2d_array ære-samma-som en-fungsjon såm-brukær array å width å height såm-gjør
+    i ære-samma-som 0.
+    imens i småære-enn width ta-åsså-gjør
+        j ære-samma-som 0.
+        imens j småære-enn height ta-åsså-gjør
+            spøtt-ut-uten-n plass-nummer i plussær 1 i-bråtæn plass-nummer j plussær 1 i-bråtæn array.
+            j ære-samma-som j plussær 1.
+        åsså-gjøru-det-igjen.
+        spøtt-ut "".
+        i ære-samma-som i plussær 1.
+    åsså-gjøru-det-igjen.
+åså-varn-færi.
+
+render_frame ære-samma-som en-fungsjon såm-brukær A å B såm-gjør
+
+    cosA ære-samma-som kjør matte dått cos med A.
+    sinA ære-samma-som kjør matte dått sin med A.
+    cosB ære-samma-som kjør matte dått cos med B.
+    sinB ære-samma-som kjør matte dått sin med B.
+
+    output ære-samma-som kjør create_2d_array med screen_width å screen_height å " ".
+    zbuffer ære-samma-som kjør create_2d_array med screen_width å screen_height å 0.
+
+    theta ære-samma-som 0.
+    imens theta småære-enn 2 gangær PI ta-åsså-gjør
+        costheta ære-samma-som kjør matte dått cos med theta.
+        sintheta ære-samma-som kjør matte dått sin med theta.
+
+        phi ære-samma-som 0.
+        imens phi småære-enn 2 gangær PI ta-åsså-gjør
+            cosphi ære-samma-som kjør matte dått cos med phi.
+            sinphi ære-samma-som kjør matte dått sin med phi.
+
+            circlex ære-samma-som R2 plussær R1 gangær costheta.
+            circley ære-samma-som R1 gangær sintheta.
+
+            x ære-samma-som circlex gangær hællæ cosB gangær cosphi plussær sinA gangær sinB gangær sinphi prekæs minusær circley gangær cosA gangær cosB.
+
+            y ære-samma-som circlex gangær hællæ sinB gangær cosphi minusær sinA gangær cosB gangær sinphi prekæs plussær circley gangær cosA gangær cosB.
+
+            z ære-samma-som K2 plussær cosA gangær circlex gangær sinphi plussær circley gangær sinA.
+
+            ooz ære-samma-som 1 delær z.
+
+            xp ære-samma-som kjør matte dått floor med hællæ screen_width delær 2 plussær K1 gangær ooz gangær x prekæs.
+            yp ære-samma-som kjør matte dått floor med hællæ screen_height delær 2 minusær K1 gangær ooz gangær y prekæs.
+
+            luminance ære-samma-som cosphi gangær costheta gangær sinB minusær cosA gangær costheta gangær sinphi minusær sinA gangær sintheta plussær cosB gangær hællæ cosA gangær sintheta minusær costheta gangær sinA gangær sinphi prekæs.
+
+            dersom-atter luminance mere-enn 0 så
+                dersom-atter ooz mere-enn plass-nummer hællæ xp plussær 1 prekæs i-bråtæn plass-nummer hællæ yp plussær 1 prekæs i-bråtæn zbuffer så
+                    endre plass-nummer hællæ xp plussær 1 prekæs i-bråtæn plass-nummer hællæ yp plussær 1 prekæs i-bråtæn zbuffer te ooz.
+                    luminance_index ære-samma-som kjør matte dått floor med hællæ luminance gangær 6 prekæs.
+                    luminance_array ære-samma-som en-bråtæ-beståænes-av "." å "," å "-" å "~" å ":" å ";" å "=" å "!" å "*" å "#" å "$" å "@" å-det-var-det.
+                    endre plass-nummer hællæ xp plussær 1 prekæs i-bråtæn plass-nummer hællæ yp plussær 1 prekæs i-bråtæn output te plass-nummer hællæ luminance_index plussær 1 prekæs i-bråtæn luminance_array.
+                ellers så
+                    ente-gjør-no.
+                åsså-æru-ferdig.
+            ellers så
+                ente-gjør-no.
+            åsså-æru-ferdig.
+
+            phi ære-samma-som phi plussær phi_spacing.
+        åsså-gjøru-det-igjen.
+ 
+
+        theta ære-samma-som theta plussær theta_spacing.
+    åsså-gjøru-det-igjen.
+
+    kjør print_2d_array med output å screen_width å screen_height.
+
+åså-varn-færi.
+
+iter ære-samma-som 0.
+
+imens iter småære-enn 100 ta-åsså-gjør
+
+    kjør render_frame med iter å 10.
+
+    iter ære-samma-som iter plussær 1.
+åsså-gjøru-det-igjen.
