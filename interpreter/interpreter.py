@@ -71,10 +71,10 @@ def interpret(ast):
                 return [ast[1]]
             
             case 'import-statement':
-                method_name = ast[2]
-                path_to_method = ast[1]
-                method = importlib.import_module(path_to_method)
-                assignment_store[method_name] = method
+                import_name = ast[2]
+                module_name = ast[1]
+                module = importlib.import_module(module_name)
+                assignment_store[import_name] = module
 
             
             case 'expression-statement':
