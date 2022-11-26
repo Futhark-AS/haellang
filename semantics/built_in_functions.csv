@@ -1,0 +1,5 @@
+Hællang;Python
+spøtt-ut x; print(x)
+spøtt-ut-uten-n x; print(x, end='')
+gi-dæ; break
+ente-gjør-no; pass
