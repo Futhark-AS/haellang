@@ -22,7 +22,7 @@ Now you can you write a .haellae file in Hællang and run it using the command: 
 
 ##### Example Code
 
-###### example_code/torus.haellae by Simen Sandhaug
+###### [example_code/torus.haellae by Simen Sandhaug](https://github.com/Futhark-AS/haellang/blob/main/example_code/torus.haellae)
 
 ![Donut](https://s1.gifyu.com/images/c962105be7b6c749f0ab16e7f1b20d9c-_1_.gif)
 
