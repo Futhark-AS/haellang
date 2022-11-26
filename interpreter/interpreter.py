@@ -194,10 +194,10 @@ def interpret(ast):
                     raise(TypeError('Du kanke fjærne noe som ente er hasjbart'))
                 del dict_ref[key] 
                 
-            case 'len-function':
+            case 'length-function':
                 ref = interpret_internal(ast[1], assignment_store)
-                if not type(ref) == list or not type(ref) == str:
-                    raise(TypeError('Du kanke finne lengden på noe som ente er e bråtæ eller e streng'))
+                if not type(ref) == list and not type(ref) == str:
+                    raise(TypeError('Du kanke finne lengden på noe som ente er e bråtæ eller e streng. Du prøvde type: ' + str(type(ref))))
                 return len(ref)
             
             case 'pass-statement':
