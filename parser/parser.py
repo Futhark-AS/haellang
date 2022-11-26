@@ -34,6 +34,13 @@ reserved = {
     'i-bråtæn':'IN_LIST',
     'græbb-fra':'POP',
     'plass-nummer':'ARRAY_INDEX',
+    'en-fungsjon':'FUNCTION',
+    'såm-brukær' : 'WITH_PARAMS',    
+    'såm-gjør': 'START_OF_FUNCTION',
+    'åså-varn-færi' : 'END_OF_FUNCTION',
+    'kjør':'RUN',
+    'med':'WITH',
+    'gi-tilbake':'RETURN',
     'kåmma':'COMMA',
     'e-orlbok-beståænes-av':'START_OF_DICT',
     'å-så-var-orlboka-færi':'END_OF_DICT',
@@ -173,6 +180,44 @@ def p_statement_if(p):
     'statement : IF expression THEN statement ELSE THEN statement END_OF_IF_THEN_ELSE END_OF_STATEMENT'
     p[0] = ('if-statement', p[2], p[4], p[7])
 
+def p_parameters_recursive(p):
+    'parameters : NAME LIST_ITEM_SEPARATOR parameters'
+    p[0] = ('parameters', p[1], p[3])
+
+def p_parameters_base(p):
+    '''parameters : NAME'''
+    p[0] = ('parameters', p[1])
+
+# def p_empty(p):
+#     'empty :'
+#     p[0] = None
+
+'''
+----------------- functions start ----------------- 
+'''
+def p_function_expression(p):
+    'expression : FUNCTION WITH_PARAMS parameters START_OF_FUNCTION statement END_OF_FUNCTION'
+    p[0] = ('function-expression', p[3], p[5])
+
+def p_function_expression_no_params(p):
+    'expression : FUNCTION START_OF_FUNCTION statement END_OF_FUNCTION'
+    p[0] = ('function-expression', p[3])
+
+def p_function_application(p):
+    'expression : RUN NAME WITH list-body'
+    p[0] = ('function-application-expression', p[2], p[4])
+
+def p_function_application_no_args(p):
+    'expression : RUN NAME'
+    p[0] = ('function-application-expression', p[2])
+
+def p_return_statement(p):
+    'statement : RETURN expression END_OF_STATEMENT'
+    p[0] = ('return-statement', p[2])
+
+'''
+----------------- functions end -----------------
+'''
 def p_statement_assign(p):
     'statement : NAME EQUALS expression END_OF_STATEMENT'
     p[0] = ('assign-statement', p[1], p[3])
@@ -233,8 +278,11 @@ parser = yacc.yacc(start='statement', debug=True)
     # pprint.pprint(out)
 
 def parse(script):
+    # import pprint
     sys.tracebacklimit = 0
     lexer.lineno = 1
+    # out = parser.parse(script)
+    # pprint.pprint(out)
     return parser.parse(script)
 
 # from interpreter import interpret

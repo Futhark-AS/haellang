@@ -22,17 +22,46 @@ def interpret(ast):
     stack = list()
 
     def interpret_internal(ast, assignment_store):
+        # import pprint
+        # pprint.pprint(ast)
         match ast[0]:
             case 'recursive-statement':
                 for i in range(2):
                     code = interpret_internal(ast[i+1], assignment_store)
-                    match code:
-                        case 'BREAK':
-                            return 'BREAK'
-                        case _:
-                            pass
+                    if code:
+                        match code[0]:
+                            case 'BREAK':
+                                return code
+                            case 'RETURN':
+                                return code
             case 'assign-statement':
                 assignment_store[ast[1]] = interpret_internal(ast[2], assignment_store)
+                
+            case 'function-expression':
+                if len(ast)==3:
+                    parameter_list = interpret_internal(ast[1], None)
+                    function_body = ast[2]
+                else:
+                    parameter_list = []
+                    function_body = ast[1]
+                return function(parameter_list, assignment_store, function_body)
+
+            case 'function-application-expression': # Run function and return
+                if len(ast) == 3:
+                    args = interpret_internal(ast[2], assignment_store)
+                else:
+                    args = []
+                f = assignment_store[ast[1]]
+                return_value = f(args)
+                if return_value:
+                    return return_value[1]
+
+            case 'parameters':
+                if len(ast) == 3:
+                    return [ast[1]] + interpret_internal(ast[2], assignment_store)
+                return [ast[1]]
+
+            
             case 'expression-statement':
                 interpret_internal(ast[1], assignment_store)
             case 'if-statement':
@@ -108,7 +137,7 @@ def interpret(ast):
                 if not type(index) == int:
                     raise(TypeError('Du kanke titte på en plass som ente er et tall uten kåmma'))
                 if not type(list_ref) == list:
-                    raise(TypeError('Du kanke utifra noe som ente er e bråtæ'))
+                    raise(TypeError('Du kanke ta utifra noe som ente er e bråtæ'))
                 if index < 1 or index > len(list_ref):
                     raise(IndexError(f'Dæven æ mårr! Klaræru ente å telle eller? Ærnte en plass {index} i den bråtæn.'))
                 return list_ref[index-1]
@@ -143,15 +172,26 @@ def interpret(ast):
             case 'while-statement':
                 while interpret_internal(ast[1], assignment_store):
                     code = interpret_internal(ast[2], assignment_store)
-                    match code:
-                        case 'BREAK':
-                            break
-                        case _:
-                            pass
+                    if code:
+                        match code[0]:
+                            case 'BREAK':
+                                return code
+                            case 'RETURN':
+                                return code
             case 'break-statement':
-                return 'BREAK'
+                return ( 'BREAK', None )
+            case 'return-statement':
+                return ( 'RETURN', interpret_internal(ast[1], assignment_store) )
             case _:
                 raise(ValueError(f'Illegal AST Node {ast[0]}'))
+
+    def function(params, assignment_store : dict, statement):
+        environment = assignment_store.copy()
+        def runnable_function(args):
+            for (param, arg) in zip(params, args):
+                environment[param] = arg
+            return interpret_internal(statement, environment)
+        return runnable_function
 
     interpret_internal(ast, assignment_store)
 
