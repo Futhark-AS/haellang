@@ -52,7 +52,9 @@ def interpret(ast):
                 else:
                     args = []
                 f = assignment_store[ast[1]]
-                return f(args)
+                return_value = f(args)
+                if return_value:
+                    return return_value[1]
 
             case 'parameters':
                 if len(ast) == 3:
