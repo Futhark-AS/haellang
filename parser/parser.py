@@ -256,7 +256,7 @@ def p_expression_print(p):
     p[0] = ('print-function', p[2])
     
 def p_expression_print_without_newline(p):
-    'expression : PRINT_WITHOUT_NEWLINE expression'
+    'statement : PRINT_WITHOUT_NEWLINE expression END_OF_STATEMENT'
     p[0] = ('print-without-newline-function', p[2])
 
 def p_expression_push(p):
@@ -272,7 +272,7 @@ def p_expression_array_index(p):
     p[0] = ('index-expression', p[2], p[4])
     
 def p_expression_change_array_index(p):
-    'expression : CHANGE_ARRAY_INDEX ARRAY_INDEX expression IN_LIST expression TO expression'
+    'expression : CHANGE_ARRAY_INDEX ARRAY_INDEX expression IN_LIST expression TO expression END_OF_LIST'
     p[0] = ('change-index-expression', p[3], p[5], p[7])
     
 def p_expression_dict_lookup(p):
