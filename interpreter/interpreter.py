@@ -23,6 +23,7 @@ def interpret(ast):
     stack = list()
 
     def interpret_internal(ast, assignment_store):
+        
         match ast[0]:
             case 'recursive-statement':
                 for i in range(2):
@@ -99,7 +100,7 @@ def interpret(ast):
                     case 'TIMES':
                         op = operator.mul
                     case 'DIVIDE':
-                        op = operator.floordiv
+                        op = operator.truediv
                     case 'MOD':
                         op = operator.mod
                     case _ : 
@@ -144,6 +145,9 @@ def interpret(ast):
             case 'print-function':
                 print(interpret_internal(ast[1], assignment_store))
                 
+            case 'print-without-newline-function':
+                print(interpret_internal(ast[1], assignment_store), end='')
+                
             case 'push-function':
                 list_ref = interpret_internal(ast[2], assignment_store)
                 if not type(list_ref) == list:
@@ -160,13 +164,25 @@ def interpret(ast):
                 index = interpret_internal(ast[1], assignment_store)
                 list_ref = interpret_internal(ast[2], assignment_store)
                 if not type(index) == int:
-                    raise(TypeError('Du kanke titte på en plass som ente er et tall uten kåmma'))
+                    raise(TypeError(f'Du kanke titte på en plass som ente er et tall uten kåmma. Du putta inn {type(index)}'))
                 if not type(list_ref) == list:
                     raise(TypeError('Du kanke ta utifra noe som ente er e bråtæ'))
                 if index < 1 or index > len(list_ref):
-                    raise(IndexError(f'Dæven æ mårr! Klaræru ente å telle eller? Ærnte en plass {index} i den bråtæn.'))
+                    raise(IndexError(f'Dæven æ mårr! Klaræru ente å telle eller? Ærnte en plass {index} bråtæn ({list_ref}).'))
                 return list_ref[index-1]
             
+            case 'change-index-expression':
+                list_ref = interpret_internal(ast[2], assignment_store)
+                index = interpret_internal(ast[1], assignment_store)
+                value = interpret_internal(ast[3], assignment_store)
+                if not type(index) == int:
+                    raise(TypeError(f'Du kanke titte på en plass som ente er et tall uten kåmma. Du putta inn {type(index)}'))
+                if not type(list_ref) == list:
+                    raise(TypeError('Du kanke ta utifra noe som ente er e bråtæ'))
+                if index < 1 or index > len(list_ref):
+                    raise(IndexError(f'Dæven æ mårr! Klaræru ente å telle eller? Ærnte en plass {index} bråtæn ({list_ref}).'))
+                list_ref[index - 1] = value
+                
             case 'lookup-expression':
                 dict_ref = interpret_internal(ast[2], assignment_store)
                 if not type(dict_ref) == dict:

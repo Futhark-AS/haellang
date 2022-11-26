@@ -1,5 +1,6 @@
 # Table of Contents
 
+
 1. [Full-Lexicon](#Full-Lexicon)
 1. [Binary-Operators](#Binary-Operators)
 1. [Comparions-Operators](#Comparions-Operators)

@@ -42,6 +42,8 @@ reserved = {
     'med':'WITH',
     'gi-tilbake':'RETURN',
     'kåmma':'COMMA',
+    'endre': 'CHANGE_ARRAY_INDEX',
+    'te': 'TO',
     'e-orlbok-beståænes-av':'START_OF_DICT',
     'å-så-var-orlboka-færi':'END_OF_DICT',
     'betyænes':'DICT_PAIR_SEPARATOR',
@@ -53,6 +55,7 @@ reserved = {
     'å-kallen-for': 'AS',
     'i-samma-slengen': 'END_OF_IMPORT',
     'dått': "IMPORT_FUNCTION_SEPARATOR",
+    'spøtt-ut-uten-n': "PRINT_WITHOUT_NEWLINE",
 }
 
 tokens = [ 
@@ -251,6 +254,10 @@ def p_statement_while(p):
 def p_expression_print(p):
     'statement : PRINT expression END_OF_STATEMENT'
     p[0] = ('print-function', p[2])
+    
+def p_expression_print_without_newline(p):
+    'statement : PRINT_WITHOUT_NEWLINE expression END_OF_STATEMENT'
+    p[0] = ('print-without-newline-function', p[2])
 
 def p_expression_push(p):
     'expression : PUSH expression IN_LIST expression END_OF_LIST'
@@ -263,6 +270,10 @@ def p_expression_pop(p):
 def p_expression_array_index(p):
     'expression : ARRAY_INDEX expression IN_LIST expression END_OF_LIST'
     p[0] = ('index-expression', p[2], p[4])
+    
+def p_expression_change_array_index(p):
+    'expression : CHANGE_ARRAY_INDEX ARRAY_INDEX expression IN_LIST expression TO expression END_OF_LIST'
+    p[0] = ('change-index-expression', p[3], p[5], p[7])
     
 def p_expression_dict_lookup(p):
     'expression : DICT_LOOKUP expression IN_DICT expression END_OF_LIST'
