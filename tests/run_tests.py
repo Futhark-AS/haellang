@@ -29,6 +29,7 @@ tests = [
     'float_test',
     'dict_test',
     'dict_operations_test',
+    'import_test',
     'function_init_test',
     'function_application_test',
     'function_return_test',

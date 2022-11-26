@@ -1,6 +1,7 @@
 import operator
 import sys
 import pprint
+import importlib
 
 statement_return_codes = set(
     'BREAK',
@@ -22,8 +23,6 @@ def interpret(ast):
     stack = list()
 
     def interpret_internal(ast, assignment_store):
-        # import pprint
-        # pprint.pprint(ast)
         match ast[0]:
             case 'recursive-statement':
                 for i in range(2):
@@ -34,6 +33,7 @@ def interpret(ast):
                                 return code
                             case 'RETURN':
                                 return code
+                            
             case 'assign-statement':
                 assignment_store[ast[1]] = interpret_internal(ast[2], assignment_store)
                 
@@ -55,19 +55,34 @@ def interpret(ast):
                 return_value = f(args)
                 if return_value:
                     return return_value[1]
+            
+            case 'function-import-application-expression': # Run function and return
+                if len(ast) == 4:
+                    args = interpret_internal(ast[3], assignment_store)
+                else:
+                    args = []
+                method = getattr(assignment_store[ast[1]], ast[2])
+                return method(*args)
 
             case 'parameters':
                 if len(ast) == 3:
                     return [ast[1]] + interpret_internal(ast[2], assignment_store)
                 return [ast[1]]
-
             
+            case 'import-statement':
+                import_name = ast[2]
+                module_name = ast[1]
+                module = importlib.import_module(module_name)
+                assignment_store[import_name] = module
+
             case 'expression-statement':
                 interpret_internal(ast[1], assignment_store)
+                
             case 'if-statement':
                 if interpret_internal(ast[1], assignment_store):
                     return interpret_internal(ast[2], assignment_store)
                 return interpret_internal(ast[3], assignment_store)
+            
             case 'binary-expression': 
                 op = None
                 match ast[1]:
@@ -90,24 +105,31 @@ def interpret(ast):
                     case _ : 
                         raise('Illegal binary expression type')
                 return op(interpret_internal(ast[2], assignment_store), interpret_internal(ast[3], assignment_store))
+            
             case 'group-expression':
                 return interpret_internal(ast[1], assignment_store)
+            
             case 'literal-expression':
                 return ast[1]
+            
             case 'variable-expression':
                 return assignment_store[ast[1]]
+            
             case 'list-expression':
                 if len(ast) ==2 :
                     return interpret_internal(ast[1], assignment_store)
                 return list()
+            
             case 'list-body':
                 if len(ast) == 3:
                     return [interpret_internal(ast[1], assignment_store)] + interpret_internal(ast[2], assignment_store)
                 return [interpret_internal(ast[1], assignment_store)]
+            
             case 'dict-expression':
                 if len(ast) == 2:
                     return interpret_internal(ast[1], assignment_store)
                 return dict()
+            
             case 'dict-body':
                 if len(ast) == 4:
                     tail_dict = interpret_internal(ast[1], assignment_store)
@@ -121,16 +143,19 @@ def interpret(ast):
 
             case 'print-function':
                 print(interpret_internal(ast[1], assignment_store))
+                
             case 'push-function':
                 list_ref = interpret_internal(ast[2], assignment_store)
                 if not type(list_ref) == list:
                     raise(TypeError('Du kanke legge te i noe som ente er e bråtæ'))
                 list_ref.append(interpret_internal(ast[1], assignment_store))
+                
             case 'pop-function':
                 list_ref = interpret_internal(ast[1], assignment_store)
                 if not type(list_ref) == list:
                     raise(TypeError('Du kanke græbbe ifra noe som ente er e bråtæ'))
                 return list_ref.pop()
+            
             case 'index-expression':
                 index = interpret_internal(ast[1], assignment_store)
                 list_ref = interpret_internal(ast[2], assignment_store)
@@ -141,6 +166,7 @@ def interpret(ast):
                 if index < 1 or index > len(list_ref):
                     raise(IndexError(f'Dæven æ mårr! Klaræru ente å telle eller? Ærnte en plass {index} i den bråtæn.'))
                 return list_ref[index-1]
+            
             case 'lookup-expression':
                 dict_ref = interpret_internal(ast[2], assignment_store)
                 if not type(dict_ref) == dict:
@@ -149,6 +175,7 @@ def interpret(ast):
                 if not is_hashable(key):
                     raise(TypeError(f'Du kanke slå opp på noe som ente er hasjbart ({type(key)==str})'))
                 return dict_ref[key]
+            
             case 'add-expression':
                 dict_ref = interpret_internal(ast[3], assignment_store)
                 if not type(dict_ref) == dict:
@@ -157,6 +184,7 @@ def interpret(ast):
                 if not is_hashable(key):
                     raise(TypeError('Du kanke legge te noe som ente er hasjbart'))
                 dict_ref[key] = interpret_internal(ast[2], assignment_store)
+                
             case 'remove-expression':
                 dict_ref = interpret_internal(ast[2], assignment_store)
                 if not type(dict_ref) == dict:
@@ -165,10 +193,13 @@ def interpret(ast):
                 if not is_hashable(key):
                     raise(TypeError('Du kanke fjærne noe som ente er hasjbart'))
                 del dict_ref[key] 
+                
             case 'len-function':
                 pass
+            
             case 'pass-statement':
                 pass
+            
             case 'while-statement':
                 while interpret_internal(ast[1], assignment_store):
                     code = interpret_internal(ast[2], assignment_store)
@@ -178,10 +209,13 @@ def interpret(ast):
                                 return code
                             case 'RETURN':
                                 return code
+                            
             case 'break-statement':
                 return ( 'BREAK', None )
+            
             case 'return-statement':
                 return ( 'RETURN', interpret_internal(ast[1], assignment_store) )
+            
             case _:
                 raise(ValueError(f'Illegal AST Node {ast[0]}'))
 

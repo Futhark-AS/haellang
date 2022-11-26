@@ -49,6 +49,10 @@ reserved = {
     'i-orlboka':'IN_DICT',
     'størlsen-a':'LENGTH',
     'fjærn':'DICT_REMOVE',
+    'hent-ut-pytonslange-funksjon':'IMPORT',
+    'å-kallen-for': 'AS',
+    'i-samma-slengen': 'END_OF_IMPORT',
+    'dått': "IMPORT_FUNCTION_SEPARATOR",
 }
 
 tokens = [ 
@@ -211,6 +215,14 @@ def p_function_application_no_args(p):
     'expression : RUN NAME'
     p[0] = ('function-application-expression', p[2])
 
+def p_import_function_application(p):
+    'expression : RUN NAME IMPORT_FUNCTION_SEPARATOR NAME WITH list-body'
+    p[0] = ('function-import-application-expression', p[2], p[4], p[6])
+    
+def p_import_function_application_no_args(p):
+    'expression : RUN NAME IMPORT_FUNCTION_SEPARATOR NAME'
+    p[0] = ('function-import-application-expression', p[2], p[4])
+
 def p_return_statement(p):
     'statement : RETURN expression END_OF_STATEMENT'
     p[0] = ('return-statement', p[2])
@@ -261,6 +273,11 @@ def p_expression_dict_remove(p):
 def p_expression_length(p):
     'expression : LENGTH expression'
     p[0] = ('length-function', p[2])
+    
+# Import python's built-in functions
+def p_statement_import(p):
+    'expression : IMPORT STRING AS NAME END_OF_IMPORT'
+    p[0] = ('import-statement', p[2], p[4])
 
 def p_statement_pass(p):
     'statement : PASS END_OF_STATEMENT'
