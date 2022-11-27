@@ -244,10 +244,12 @@ def interpret(ast):
 
     def function(params, assignment_store : dict, statement):
         environment = assignment_store.copy()
+        name = assignment_store[0]
         def runnable_function(args):
             for (param, arg) in zip(params, args):
                 environment[param] = arg
-            environment[assignment_store[0]] = runnable_function
+            if name:
+                assignment_store[name] = runnable_function
             return interpret_internal(statement, environment.copy())
         return runnable_function
 
