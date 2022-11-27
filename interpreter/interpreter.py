@@ -35,6 +35,7 @@ def interpret(ast):
                                 return code
                             
             case 'assign-statement':
+                assignment_store[0] = ast[1]
                 assignment_store[ast[1]] = interpret_internal(ast[2], assignment_store)
                 
             case 'function-expression':
@@ -227,7 +228,8 @@ def interpret(ast):
         def runnable_function(args):
             for (param, arg) in zip(params, args):
                 environment[param] = arg
-            return interpret_internal(statement, environment)
+            environment[assignment_store[0]] = runnable_function
+            return interpret_internal(statement, environment.copy())
         return runnable_function
 
     interpret_internal(ast, assignment_store)
