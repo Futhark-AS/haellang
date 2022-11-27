@@ -1,0 +1,12 @@
+fib ære-samma-som en-fungsjon såm-brukær n såm-gjør
+    dersom-atter n småære-enn 2 så
+        gi-tilbake 1.
+    ellers så
+        a ære-samma-som kjør fib med n minusær 1 å-det-var-det.
+        b ære-samma-som kjør fib med n minusær 2 å-det-var-det.
+        c ære-samma-som a plussær b.
+        gi-tilbake c.
+    åsså-æru-ferdig.
+åså-varn-færi.
+
+kjør fib med 30 å-det-var-det.
