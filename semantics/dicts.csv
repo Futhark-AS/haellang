@@ -2,5 +2,6 @@ Hællang; Python
 e-orlbok-beståænes-av; {
 x betyænes y; x: y
 å-så-var-orlboka-færi; }
-slå-opp key i-orlboka x; x[key]
-fjærn key i-orlboka x; x.del(key)
+slå-opp key i-orlboka x å-det-var-det; x[key]
+legg-te x betyænes y i-orlboka z å-det-var-det; z[x] = y
+fjærn key i-orlboka x å-det-var-det; x.del(key)

@@ -1,0 +1,3 @@
+Hællang;Python
+hent-ut-pytonslange-funksjon "math" å-kallen-for matte i-samma-slengen; import math as matte
+kjør matte dått sin med π/2 å-det-var-det; math.sin(π/2)

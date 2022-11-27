@@ -10,11 +10,13 @@ semantic_classes = {
     "Instanciation": pd.read_csv("instanciation.csv", delimiter=";"),
     "Truth Values": pd.read_csv("truth_values.csv", delimiter=";"),
     "Parenthesis": pd.read_csv("parenthesis.csv", delimiter=";"),
-    "Functions": pd.read_csv("functions.csv", delimiter=";"),
     "If Else Statements": pd.read_csv("if_else_statements.csv", delimiter=";"),
     "While Loops": pd.read_csv("while.csv", delimiter=";"),
     "Lists": pd.read_csv("lists.csv", delimiter=";"),
     "Dictionaries": pd.read_csv("dicts.csv", delimiter=";"),
+    "Functions": pd.read_csv("functions.csv", delimiter=";"),
+    "Built in Functions": pd.read_csv("built_in_functions.csv", delimiter=";"),
+    "Import Statements": pd.read_csv("import_statements.csv", delimiter=";"),
 }
 
 

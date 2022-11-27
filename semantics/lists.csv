@@ -2,8 +2,9 @@ Hællang; Python
 en-bråtæ-beståænes-av; [
 x å y; x, y
 å_det_var_det; ]
-x legg-te y; x.append(y)
-græbb-fra x; x.pop()
-plass-nummer i i-bråtæn x; x[i]
-størlsen-a x; len(x)
-x ære-samma-som en-bråtæ-beståænes-av x å y å_det_var_det; x = [x, y]
+x legg-te y å-det-var-det; x.append(y)
+græbb-fra x å-det-var-det; x.pop()
+plass-nummer i i-bråtæn x å-det-var-det; x[i]
+størlsen-a x å-det-var-det; len(x)
+endre plass-nummer i i-bråtæn x te 0 å-det-var-det; x[i] = 0
+x ære-samma-som en-bråtæ-beståænes-av x å y å-det-var_det; x = [x, y]

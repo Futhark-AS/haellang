@@ -1,0 +1,145 @@
+hent-ut-pytonslange-funksjon "os" å-kallen-for os i-samma-slengen.
+hent-ut-pytonslange-funksjon "math" å-kallen-for matte i-samma-slengen.
+hent-ut-pytonslange-funksjon "time" å-kallen-for tid i-samma-slengen.
+
+
+theta_spacing ære-samma-som 0 kåmma 04.
+phi_spacing ære-samma-som 0 kåmma 01.
+PI ære-samma-som 3 kåmma 141592653589793.
+
+screen_width ære-samma-som 50.
+screen_height ære-samma-som 50.
+
+R1 ære-samma-som 1.
+R2 ære-samma-som 2.
+K2 ære-samma-som 100.
+
+K1 ære-samma-som screen_width gangær K2 gangær 3 delær hællæ 8 gangær hællæ R1 plussær R2 prekæs prekæs.
+
+create_2d_array ære-samma-som en-fungsjon såm-brukær rows å cols å value såm-gjør
+    i ære-samma-som 0.
+    array ære-samma-som en-bråtæ-beståænes-av  å-det-var-det.
+    imens i småære-enn rows plussær 1 ta-åsså-gjør
+        j ære-samma-som 0.
+        temp ære-samma-som en-bråtæ-beståænes-av å-det-var-det.
+        imens j småære-enn cols plussær 1 ta-åsså-gjør
+            legg-te value i-bråtæn temp å-det-var-det.
+            j ære-samma-som j plussær 1.
+        åsså-gjøru-det-igjen.
+        legg-te temp i-bråtæn array å-det-var-det.
+        i ære-samma-som i plussær 1.
+    åsså-gjøru-det-igjen.
+    gi-tilbake array.
+åså-varn-færi.
+
+print_2d_array ære-samma-som en-fungsjon såm-brukær array å width å height såm-gjør
+    i ære-samma-som 0.
+    imens i småære-enn width ta-åsså-gjør
+        j ære-samma-som 0.
+        imens j småære-enn height ta-åsså-gjør
+            spøtt-ut-uten-n plass-nummer i plussær 1 i-bråtæn plass-nummer j plussær 1 i-bråtæn array å-det-var-det å-det-var-det.
+            j ære-samma-som j plussær 1.
+        åsså-gjøru-det-igjen.
+        spøtt-ut "".
+        i ære-samma-som i plussær 1.
+    åsså-gjøru-det-igjen.
+åså-varn-færi.
+
+render_frame ære-samma-som en-fungsjon såm-brukær A å B såm-gjør
+
+    cosA ære-samma-som kjør matte dått cos med A å-det-var-det.
+    sinA ære-samma-som kjør matte dått sin med A å-det-var-det.
+    cosB ære-samma-som kjør matte dått cos med B å-det-var-det.
+    sinB ære-samma-som kjør matte dått sin med B å-det-var-det.
+
+    output ære-samma-som kjør create_2d_array med screen_width å screen_height å "  " å-det-var-det.
+    zbuffer ære-samma-som kjør create_2d_array med screen_width å screen_height å 0 å-det-var-det.
+
+    theta ære-samma-som 0.
+    imens theta småære-enn 2 gangær PI ta-åsså-gjør
+        costheta ære-samma-som kjør matte dått cos med theta å-det-var-det.
+        sintheta ære-samma-som kjør matte dått sin med theta å-det-var-det.
+
+        phi ære-samma-som 0.
+        imens phi småære-enn 2 gangær PI ta-åsså-gjør
+            cosphi ære-samma-som kjør matte dått cos med phi å-det-var-det.
+            sinphi ære-samma-som kjør matte dått sin med phi å-det-var-det.
+
+            circlex ære-samma-som R2 plussær R1 gangær costheta.
+            circley ære-samma-som R1 gangær sintheta.
+
+            x ære-samma-som circlex gangær hællæ cosB gangær cosphi plussær sinA gangær sinB gangær sinphi prekæs minusær circley gangær cosA gangær cosB.
+
+            y ære-samma-som circlex gangær hællæ sinB gangær cosphi minusær sinA gangær cosB gangær sinphi prekæs plussær circley gangær cosA gangær cosB.
+
+            z ære-samma-som K2 plussær cosA gangær circlex gangær sinphi plussær circley gangær sinA.
+
+            ooz ære-samma-som 1 delær z.
+
+            xp ære-samma-som kjør matte dått ceil med hællæ screen_width delær 2 plussær K1 gangær ooz gangær x prekæs å-det-var-det.
+            yp ære-samma-som kjør matte dått ceil med hællæ screen_height delær 2 minusær K1 gangær ooz gangær y prekæs å-det-var-det.
+            xp ære-samma-som xp plussær 1.
+            yp ære-samma-som yp plussær 1.
+
+            L ære-samma-som cosphi gangær costheta gangær sinB minusær cosA gangær costheta gangær sinphi minusær sinA gangær sintheta plussær cosB gangær hællæ cosA gangær sintheta minusær costheta gangær sinA gangær sinphi prekæs.
+
+            dersom-atter L mere-enn 0 så
+
+
+                dersom-atter xp er-prikk-lik 0 så
+                    xp ære-samma-som 1.
+                ellers så
+                    ente-gjør-no.
+                åsså-æru-ferdig.
+
+                dersom-atter yp er-prikk-lik 0 så
+                    yp ære-samma-som 1.
+                ellers så
+                    ente-gjør-no.
+                åsså-æru-ferdig.
+
+                iZ ære-samma-som plass-nummer xp i-bråtæn zbuffer å-det-var-det.
+                iO ære-samma-som plass-nummer xp i-bråtæn output å-det-var-det.
+                jZ ære-samma-som yp.
+                jO ære-samma-som yp.
+
+                
+
+                dersom-atter ooz mere-enn plass-nummer jZ i-bråtæn iZ å-det-var-det så
+                    endre plass-nummer jZ i-bråtæn iZ te ooz å-det-var-det.
+                    luminance_index ære-samma-som kjør matte dått ceil med L gangær 8 å-det-var-det.
+                    luminance_array ære-samma-som en-bråtæ-beståænes-av ".." å ",," å "--" å "~~" å "::" å ";;" å "==" å "!!" å "**" å "##" å "$$" å "@@" å-det-var-det.
+                    luminance_value ære-samma-som plass-nummer luminance_index i-bråtæn luminance_array å-det-var-det.
+                    endre plass-nummer jO i-bråtæn iO te luminance_value å-det-var-det.                
+                ellers så
+                    ente-gjør-no.
+                åsså-æru-ferdig.
+            ellers så
+                ente-gjør-no.
+            åsså-æru-ferdig.
+
+            phi ære-samma-som phi plussær phi_spacing.
+        åsså-gjøru-det-igjen.
+ 
+
+        theta ære-samma-som theta plussær theta_spacing.
+    åsså-gjøru-det-igjen.
+
+    kjør print_2d_array med output å screen_width å screen_height å-det-var-det.
+
+åså-varn-færi.
+
+v ære-samma-som 0.
+u ære-samma-som 0.
+iterations ære-samma-som 0.
+speed ære-samma-som 20.
+
+imens iterations småære-enn 1000 ta-åsså-gjør
+    kjør os dått system med "clear" å-det-var-det.
+    kjør render_frame med u plussær 1 å v å-det-var-det.
+    kjør tid dått sleep med 0 kåmma 2 å-det-var-det.
+    u ære-samma-som u plussær 1 gangær PI gangær speed delær 360.
+    v ære-samma-som v plussær 1 gangær PI gangær speed delær 360.
+
+    iterations ære-samma-som iterations plussær 1.
+åsså-gjøru-det-igjen.

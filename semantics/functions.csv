@@ -1,4 +1,7 @@
 Hællang;Python
-spøtt-ut x; print(x)
-gi-dæ; break
-ente-gjør-no; pass
+f ære-samma-som en-fungsjon som-gjør åså-varn-færi; def f():
+f ære-samma-som en-fungsjon som-brukær a å b som-gjør åså-varn-færi; def f(a,b):
+gi-tilbake x; return x
+åså-varn-færi; END_OF_FUNCTION
+f ære-samma-som en-fungsjon som-brukær a å b som-gjør return a åså-varn-færi,; def f(a,b): return a
+kjør f med 1 å 2 å-det-var-det; f(1,2)
