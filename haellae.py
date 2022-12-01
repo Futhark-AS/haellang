@@ -3,12 +3,12 @@ from parser.parser import parse
 from interpreter.interpreter import interpret
 import pathlib
 
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 standard_library = """"""
-path = pathlib.Path(__file__).resolve().__str__().replace("haellae.py", "")
 
-print(path)
-
-with open(path + "/lib/haellae.haellae", "r") as f:
+with open(f"{__location__}/lib/haellae.haellae", "r") as f:
     standard_library = f.read()
 
 def execute(filename):
