@@ -35,6 +35,7 @@ tests = [
     'function_return_test',
     'comment_test',
     'concat_strings_test',
+    'standard_library_test',
 ]
 
 def run_tests():
