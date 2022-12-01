@@ -8,7 +8,7 @@ __location__ = os.path.realpath(
 
 standard_library = """"""
 
-with open(f"{__location__}/lib/haellae.haellae", "r") as f:
+with open(f"{__location__}/stl/haellae.haellae", "r") as f:
     standard_library = f.read()
 
 def execute(filename):
