@@ -34,6 +34,7 @@ tests = [
     'function_application_test',
     'function_return_test',
     'comment_test',
+    'standard_library_test',
 ]
 
 def run_tests():
