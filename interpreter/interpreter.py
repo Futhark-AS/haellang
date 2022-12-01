@@ -86,7 +86,7 @@ def interpret(ast):
                 return interpret_internal(ast[3], assignment_store)
             
             case 'binary-expression': 
-                ast2_interpreted = interpret_internal(ast[1], assignment_store)
+                ast2_interpreted = interpret_internal(ast[2], assignment_store)
                 ast3_interpreted = interpret_internal(ast[3], assignment_store)
                 op = None
                 match ast[1]:
