@@ -1,12 +1,11 @@
 import sys, os, io
 from parser.parser import parse
 from interpreter.interpreter import interpret
-
-dirname = os.path.dirname(__file__)
+import pathlib
 
 standard_library = """"""
 
-with open(os.path.join(dirname, "lib/haellae.haellae"), "r") as f:
+with open(os.path.join(pathlib.Path(__file__).parent.resolve(), "lib/haellae.haellae"), "r") as f:
     standard_library = f.read()
 
 def execute(filename):
