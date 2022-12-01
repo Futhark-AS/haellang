@@ -1,6 +1,6 @@
 is_prime ære-samma-som en-fungsjon såm-brukær n såm-gjør
     i ære-samma-som 2.
-    imens i småære enn n delær 2 ta-åsså-gjør
+    imens i småære-enn n delær 2 ta-åsså-gjør
         dersom-atter hællæ n mådda-med i prekæs er-prikk-lik 0 så
             gi-tilbake "Not Prime".
         ellers så

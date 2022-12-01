@@ -2,33 +2,16 @@ import sys, os, io
 from parser.parser import parse
 from interpreter.interpreter import interpret
 
-hyphenMap = {
-    'ære samma som': 'ære-samma-som',
-    'dersom atter': 'dersom-atter',
-    'spøtt ut': 'spøtt-ut',
-    'mere enn': 'mere-enn',
-    'åsså æru ferdig': 'åsså-æru-ferdig',
-    'ente gjør no': 'ente-gjør-no',
-    'mådda med': 'mådda-med',
-    'småære enn': 'småære-enn',
-    'er prikk lik': 'er-prikk-lik',
-    'ta åsså gjør': 'ta-åsså-gjør',
-    'åsså gjøru det igjen': 'åsså-gjøru-det-igjen',
-    'klart det': 'klart-det',
-    'ente rekti': 'ente-rekti',
-    'gi dæ':'gi-dæ',
-    'gi tilbake': 'gi-tilbake',
-    'siær atter': 'siær-atter',
-}
+dirname = os.path.dirname(__file__)
 
-def addHyphens(script, hyphenMap):
-    for key, value in hyphenMap.items():
-        script = script.replace(key, value)
-    return script
+standard_library = """"""
+
+with open(os.path.join(dirname, "lib/haellae.haellae"), "r") as f:
+    standard_library = f.read()
 
 def execute(filename):
     script = io.open(filename, mode="r", encoding="utf-8").read()
-    script = addHyphens(script, hyphenMap)
+    script = standard_library + script
     parsed_script = parse(script)
     if(parsed_script == None):
         raise SyntaxError("Invalid input")
