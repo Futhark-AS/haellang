@@ -65,6 +65,10 @@ tokens = [
 
 t_END_OF_STATEMENT = r'[.,]'
 
+def t_COMMENT(t):
+    r'\#.*\#'
+    pass
+
 def t_ID(t):
     r'([a-zA-ZæøåÆØÅ_][a-zA-ZæøåÆØÅ_0-9]*-)*[a-zA-ZæøåÆØÅ_][a-zA-ZæøåÆØÅ_0-9]*'
     t.type = reserved.get(t.value,'NAME')    # Check for reserved words
