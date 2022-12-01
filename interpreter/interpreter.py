@@ -86,6 +86,8 @@ def interpret(ast):
                 return interpret_internal(ast[3], assignment_store)
             
             case 'binary-expression': 
+                ast2_interpreted = interpret_internal(ast[1], assignment_store)
+                ast3_interpreted = interpret_internal(ast[3], assignment_store)
                 op = None
                 match ast[1]:
                     case 'GT':
@@ -95,7 +97,7 @@ def interpret(ast):
                     case 'EQ':
                         op = operator.eq
                     case 'PLUS':
-                        if(type(interpret_internal(ast[2], assignment_store)) == str and type(interpret_internal(ast[3], assignment_store)) == str):
+                        if(type(ast2_interpreted) == str and type(ast3_interpreted) == str):
                             op = operator.concat
                         else:
                             op = operator.add
@@ -109,7 +111,7 @@ def interpret(ast):
                         op = operator.mod
                     case _ : 
                         raise('Illegal binary expression type')
-                return op(interpret_internal(ast[2], assignment_store), interpret_internal(ast[3], assignment_store))
+                return op(ast2_interpreted, ast3_interpreted)
             
             case 'group-expression':
                 return interpret_internal(ast[1], assignment_store)
