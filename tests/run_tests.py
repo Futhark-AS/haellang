@@ -33,6 +33,7 @@ tests = [
     'function_init_test',
     'function_application_test',
     'function_return_test',
+    'recursion_test',
 ]
 
 def run_tests():
