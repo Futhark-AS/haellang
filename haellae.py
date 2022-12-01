@@ -6,8 +6,6 @@ import pathlib
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-standard_library = """"""
-
 with open(f"{__location__}/stl/haellae.haellae", "r") as f:
     standard_library = f.read()
 
