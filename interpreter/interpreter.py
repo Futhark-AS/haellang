@@ -95,7 +95,10 @@ def interpret(ast):
                     case 'EQ':
                         op = operator.eq
                     case 'PLUS':
-                        op = operator.add
+                        if(type(ast[2]) == str and type(ast[3]) == str):
+                            op = operator.concat
+                        else:
+                            op = operator.add
                     case 'MINUS':
                         op = operator.sub
                     case 'TIMES':
