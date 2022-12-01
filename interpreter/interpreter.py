@@ -95,7 +95,7 @@ def interpret(ast):
                     case 'EQ':
                         op = operator.eq
                     case 'PLUS':
-                        if(type(ast[2]) == str and type(ast[3]) == str):
+                        if(type(interpret_internal(ast[2], assignment_store)) == str and type(interpret_internal(ast[3], assignment_store)) == str):
                             op = operator.concat
                         else:
                             op = operator.add
