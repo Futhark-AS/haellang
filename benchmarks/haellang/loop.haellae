@@ -1,0 +1,9 @@
+loop ære-samma-som en-fungsjon såm-gjør
+    i ære-samma-som 0.
+    imens i småære-enn 1000000 ta-åsså-gjør 
+        i ære-samma-som i plussær 1.
+    åsså-gjøru-det-igjen.
+    gi-tilbake i.
+åså-varn-færi.
+
+kjør loop.
