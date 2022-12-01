@@ -4,8 +4,9 @@ from interpreter.interpreter import interpret
 import pathlib
 
 standard_library = """"""
+path = pathlib.Path(__file__).parent.resolve().__str__()
 
-with open(os.path.join(pathlib.Path(__file__).parent.resolve(), "lib/haellae.haellae"), "r") as f:
+with open(path + "/lib/haellae.haellae", "r") as f:
     standard_library = f.read()
 
 def execute(filename):
