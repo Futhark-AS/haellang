@@ -15,3 +15,16 @@ slå_sammen_bråtæne ære-samma-som en-fungsjon såm-brukær bråtæ_1 å bråt
 
     gi-tilbake slått_sammen_bråtæ.
 åså-varn-færi.
+
+ær_primtall ære-samma-som en-fungsjon såm-brukær n såm-gjør
+    i ære-samma-som 2.
+    imens i småære enn n delær 2 ta-åsså-gjør
+        dersom-atter hællæ n mådda-med i prekæs er-prikk-lik 0 så
+            gi-tilbake ente-rekti.
+        ellers så
+            ente-gjør-no.
+        åsså-æru-ferdig.
+    i ære-samma-som i plussær 1.
+    åsså-gjøru-det-igjen.
+    gi-tilbake klart-det.
+åså-varn-færi.
