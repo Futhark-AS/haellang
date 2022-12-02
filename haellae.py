@@ -1,6 +1,7 @@
 import sys, os, io
 from parser.parser import parse
 from interpreter.interpreter import interpret
+from repl import repl
 import pathlib
 
 __location__ = os.path.realpath(
@@ -20,7 +21,7 @@ def execute(filename):
 
 def main(args):
     if(len(args) == 0):
-        raise FileNotFoundError("Must provide a path to a file")
+        repl()
     filename = args[0]
     if(not os.path.exists(filename)):
         raise FileNotFoundError("Invalid path or file does not exist")
