@@ -28,3 +28,11 @@ slå_sammen_bråtæne ære-samma-som en-fungsjon såm-brukær bråtæ_1 å bråt
     åsså-gjøru-det-igjen.
     gi-tilbake klart-det.
 åså-varn-færi.
+
+absolutt_værrdi ære-samma-som en-fungsjon såm-brukær n såm-gjør
+    dersom-atter n småære-enn 0 så
+        gi-tilbake n gangær hællæ 0 minusær 1 prekæs.
+    ellers så
+        gi-tilbake n.
+    åsså-æru-ferdig.
+åså-varn-færi.
