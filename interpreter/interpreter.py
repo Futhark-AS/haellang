@@ -43,7 +43,7 @@ def interpret(ast, assignment_store = None):
                 if execution_state.signal != Signal.NONE:
                     return val1
                 val2 = interpret_internal(ast[2], assignment_store, execution_state)
-                return val2 if val2 else val1
+                return val2 if val2!=None else val1
                             
             case 'assign-statement':
                 execution_state.assignment = ast[1]
