@@ -3,8 +3,8 @@ hent-ut-pytonslange-funksjon "math" å-kallen-for matte i-samma-slengen.
 hent-ut-pytonslange-funksjon "time" å-kallen-for tid i-samma-slengen.
 
 
-theta_spacing ære-samma-som 0 kåmma 04.
-phi_spacing ære-samma-som 0 kåmma 01.
+theta_spacing ære-samma-som 0 kåmma 2.
+phi_spacing ære-samma-som 0 kåmma 05.
 PI ære-samma-som 3 kåmma 141592653589793.
 
 screen_width ære-samma-som 50.
@@ -132,7 +132,7 @@ render_frame ære-samma-som en-fungsjon såm-brukær A å B såm-gjør
 v ære-samma-som 0.
 u ære-samma-som 0.
 iterations ære-samma-som 0.
-speed ære-samma-som 20.
+speed ære-samma-som 25.
 
 imens iterations småære-enn 1000 ta-åsså-gjør
     kjør os dått system med "clear" å-det-var-det.
