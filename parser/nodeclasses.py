@@ -11,6 +11,10 @@ class ExpressionNode(ASTNode):
     pass
 
 @dataclass
+class GroupExpressionNode(ExpressionNode):
+    inner_expression : ExpressionNode
+
+@dataclass
 class StatementNode(ASTNode):
     pass
 
@@ -20,7 +24,11 @@ class StatementsNode(ASTNode):
     tail : StatementsNode
 
 @dataclass
-class LiteralNode(ExpressionNode):
+class EmptyNode(ASTNode):
+    pass
+
+@dataclass
+class LiteralExpressionNode(ExpressionNode):
     literal: bool | str | int | float
 
 @dataclass
@@ -86,6 +94,9 @@ class AssignStatementNode(StatementNode):
     expression : ExpressionNode
 
 @dataclass
+class BreakStatementNode(StatementNode):
+    pass
+@dataclass
 class WhileStatementNode(StatementNode):
     condition : ExpressionNode
     body : StatementsNode
@@ -139,6 +150,10 @@ class LengthExpressionNode(ExpressionNode):
 class ImportStatementNode(StatementNode):
     module : str
     alias : str
+
+@dataclass
+class PassStatementNode(StatementNode):
+    pass
 
 @dataclass
 class ImportedFunctionApplicationExpressionNode(ExpressionNode):
