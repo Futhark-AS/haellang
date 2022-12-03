@@ -9,8 +9,8 @@ class Prompt(Cmd):
     prompt = '>>> '
     # intro = "Welcome to the haellang repl!"
 
-    def init(self): 
-        self.assignment_store = dict()
+    def init(self, standard_library): 
+        _, self.assignment_store = interpret(parse(standard_library))
 
     def do_exit(self, _):
         exit(0)
@@ -19,7 +19,7 @@ class Prompt(Cmd):
         try:
             self.assignment_store = execute_statement(statement, self.assignment_store)
         except Exception as e:
-            print(e)
+            print(e.__traceback__)
  
  
     do_EOF = do_exit
@@ -31,9 +31,9 @@ def execute_statement(statement:str, assignment_store:dict):
     return new_assignment_store
 
 
-def repl():
+def repl(standard_library):
     prompt = Prompt()
-    prompt.init()
+    prompt.init(standard_library)
     while True:
         try:
             prompt.cmdloop()

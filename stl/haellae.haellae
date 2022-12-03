@@ -15,3 +15,46 @@ slå_sammen_bråtæne ære-samma-som en-fungsjon såm-brukær bråtæ_1 å bråt
 
     gi-tilbake slått_sammen_bråtæ.
 åså-varn-færi.
+
+ær_primtall ære-samma-som en-fungsjon såm-brukær n såm-gjør
+    i ære-samma-som 2.
+    imens i småære-enn n delær 2 plussær 1 ta-åsså-gjør
+        dersom-atter hællæ n mådda-med i prekæs er-prikk-lik 0 så
+            gi-tilbake ente-rekti.
+        ellers så
+            ente-gjør-no.
+        åsså-æru-ferdig.
+        i ære-samma-som i plussær 1.
+    åsså-gjøru-det-igjen.
+    gi-tilbake klart-det.
+åså-varn-færi.
+
+absolutt_værrdi ære-samma-som en-fungsjon såm-brukær n såm-gjør
+    dersom-atter n småære-enn 0 så
+        gi-tilbake n gangær hællæ 0 minusær 1 prekæs.
+    ellers så
+        gi-tilbake n.
+    åsså-æru-ferdig.
+åså-varn-færi.
+
+opphøyd_i ære-samma-som en-fungsjon såm-brukær n å povver såm-gjør
+    i ære-samma-som 0.
+    m ære-samma-som 1.  
+    imens i småære-enn povver ta-åsså-gjør
+        m ære-samma-som m gangær n.
+        i ære-samma-som i plussær 1.
+    åsså-gjøru-det-igjen.
+    gi-tilbake m.
+åså-varn-færi.
+
+kartlegg ære-samma-som en-fungsjon såm-brukær f å bråtæ såm-gjør
+    ressultat ære-samma-som en-bråtæ-beståænes-av å-det-var-det.
+    i ære-samma-som 0.
+    imens
+        i småære-enn hællæ størlsen-a bråtæ å-det-var-det prekæs
+    ta-åsså-gjør
+        legg-te kjør f med plass-nummer i plussær 1 i-bråtæn bråtæ å-det-var-det å-det-var-det i-bråtæn ressultat å-det-var-det.
+        i ære-samma-som i plussær 1.
+    åsså-gjøru-det-igjen.
+    gi-tilbake ressultat.
+åså-varn-færi.

@@ -2,3 +2,18 @@ x ære-samma-som en-bråtæ-beståænes-av 1 å 2 å-det-var-det.
 y ære-samma-som en-bråtæ-beståænes-av 3 å 4 å-det-var-det.
 
 spøtt-ut kjør slå_sammen_bråtæne med x å y å-det-var-det.
+
+spøtt-ut kjør ær_primtall med 2 å-det-var-det.
+spøtt-ut kjør ær_primtall med 4 å-det-var-det.
+spøtt-ut kjør ær_primtall med 25 å-det-var-det.
+
+spøtt-ut kjør absolutt_værrdi med 2 minusær 4 å-det-var-det.
+spøtt-ut kjør absolutt_værrdi med 4 minusær 2 å-det-var-det.
+
+spøtt-ut kjør opphøyd_i med 2 å 8 å-det-var-det.
+
+spøtt-ut kjør kartlegg med 
+    en-fungsjon såm-brukær n såm-gjør gi-tilbake n plussær 1.åså-varn-færi 
+å 
+    en-bråtæ-beståænes-av 1 å 2 å-det-var-det 
+å-det-var-det.
