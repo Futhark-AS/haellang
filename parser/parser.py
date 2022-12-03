@@ -41,7 +41,7 @@ reserved = {
     'kjør':'RUN',
     'med':'WITH',
     'gi-tilbake':'RETURN',
-    'kåmma':'COMMA',
+    #'kåmma':'COMMA',
     'endre': 'CHANGE_ARRAY_INDEX',
     'te': 'TO',
     'e-orlbok-beståænes-av':'START_OF_DICT',
@@ -59,7 +59,7 @@ reserved = {
 }
 
 tokens = [ 
-    'NAME','NUMBER', 'STRING', 
+    'NAME','NUMBER', 'STRING', 'FLOAT', 
     'END_OF_STATEMENT',
 ] + list(set(reserved.values()))
 
@@ -76,6 +76,11 @@ def t_ID(t):
 
 def t_NAME(t):
     r'[a-zA-ZæøåÆØÅ_][a-zA-ZæøåÆØÅ0-9_]*'
+    return t
+
+def t_FLOAT(t):
+    r'\d+\s*kåmma\s*\d+'
+    t.value = float(t.value.replace(r'kåmma', '.').replace(" ", ""))
     return t
 
 def t_NUMBER(t):
@@ -105,7 +110,7 @@ precedence = (
     ('nonassoc', 'LT', 'GT', 'EQ'),  # Nonassociative operators
     ('left', 'PLUS', 'MINUS', 'MOD'),
     ('left', 'TIMES', 'DIVIDE'),
-    ('nonassoc', 'COMMA'),
+    #('nonassoc', 'COMMA'),
     ('nonassoc', 'IN_DICT', 'IN_LIST'),
 )
 
@@ -130,8 +135,8 @@ def p_expression_number(p):
     p[0] = ('literal-expression',p[1])
 
 def p_expression_float(p):
-    '''expression : NUMBER COMMA NUMBER'''
-    p[0] = ('literal-expression',float(str(p[1])+'.'+str(p[3])))
+    '''expression : FLOAT'''
+    p[0] = ('literal-expression', p[1])
 
 def p_expression_string(p):
     '''expression : STRING'''

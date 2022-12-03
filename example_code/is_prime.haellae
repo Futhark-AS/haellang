@@ -11,5 +11,5 @@ is_prime ære-samma-som en-fungsjon såm-brukær n såm-gjør
     gi-tilbake "Prime".
 åså-varn-færi.
 
-x ære-samma-som kjør is_prime med 101.
+x ære-samma-som kjør is_prime med 101 å-det-var-det.
 spøtt-ut x.
