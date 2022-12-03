@@ -21,7 +21,7 @@ def execute(filename):
 
 def main(args):
     if(len(args) == 0):
-        repl()
+        repl(standard_library)
     filename = args[0]
     if(not os.path.exists(filename)):
         raise FileNotFoundError("Invalid path or file does not exist")
