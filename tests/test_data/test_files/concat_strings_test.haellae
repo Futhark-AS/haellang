@@ -1,0 +1,23 @@
+spøtt-ut "Hæll" plussær "ang".
+
+x ære-samma-som "Åssen " plussær "går'e".
+y ære-samma-som "æ'mårr?".
+
+spøtt-ut x.
+spøtt-ut y.
+spøtt-ut x plussær " " plussær y.
+
+
+streng ære-samma-som en-fungsjon såm-brukær lengde såm-gjør
+    i ære-samma-som 0.
+    rettur_streng ære-samma-som "".
+    imens i småære-enn lengde ta-åsså-gjør
+        rettur_streng ære-samma-som rettur_streng plussær "1".
+        i ære-samma-som i plussær 1.
+    åsså-gjøru-det-igjen.
+    gi-tilbake rettur_streng.
+åså-varn-færi.
+
+
+y ære-samma-som kjør streng med 10 å-det-var-det plussær "Ser man det æmårr".
+spøtt-ut y.
