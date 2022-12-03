@@ -2,6 +2,7 @@ import ply.lex as lex
 import ply.yacc as yacc
 import re
 import sys 
+from nodeclasses import *
 
 reserved = {
     'plussær':'PLUS',
@@ -109,6 +110,9 @@ precedence = (
     ('nonassoc', 'IN_DICT', 'IN_LIST'),
 )
 
+# -------- Expressions -------- #
+
+
 def p_expression_binop(p):
     '''expression : expression PLUS expression
                 | expression MINUS expression
@@ -123,186 +127,188 @@ def p_expression_binop(p):
 
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
-    p[0] = ('group-expression',p[2])
+    p[0] = GroupExpressionNode(p[2])
 
 def p_expression_number(p):
     '''expression : NUMBER'''
-    p[0] = ('literal-expression',p[1])
+    p[0] = ListExpressionNode(p[1])
 
 def p_expression_float(p):
     '''expression : NUMBER COMMA NUMBER'''
-    p[0] = ('literal-expression',float(str(p[1])+'.'+str(p[3])))
+    p[0] = LiteralExpressionNode(float(str(p[1])+'.'+str(p[3])))
 
 def p_expression_string(p):
     '''expression : STRING'''
-    p[0] = ('literal-expression', p[1])
+    p[0] = LiteralExpressionNode(p[1])
     
 def p_expression_dict_empty(p):
     '''expression : START_OF_DICT END_OF_DICT'''
-    p[0] = ('dict-expression',)
+    p[0] = DictExpressionNode(None)
     
 def p_expression_dict(p):
     '''expression : START_OF_DICT dict-body END_OF_DICT'''
-    p[0] = ('dict-expression', p[2])
+    p[0] = DictExpressionNode(p[2])
     
 def p_expression_dict_body_recursive(p):
-    '''dict-body : dict-body  LIST_ITEM_SEPARATOR expression DICT_PAIR_SEPARATOR expression'''
-    p[0] = ('dict-body', p[1], p[3], p[5])
+    '''dict-body : expression DICT_PAIR_SEPARATOR expression LIST_ITEM_SEPARATOR dict-body'''
+    p[0] = DictBodyNode(p[1], p[3], p[5])
 
 def p_expression_dict_body_base(p):
     '''dict-body : expression DICT_PAIR_SEPARATOR expression'''
-    p[0] = ('dict-body', p[1], p[3])
+    p[0] = DictBodyNode(p[1], p[3], None)
     
 def p_expression_list_empty(p):
     '''expression : START_OF_LIST END_OF_LIST'''
-    p[0] = ('list-expression',)
+    p[0] = ListExpressionNode(None)
 
 def p_expression_list(p):
     '''expression : START_OF_LIST list-body END_OF_LIST'''
-    p[0] = ('list-expression', p[2])
+    p[0] = ListExpressionNode(p[2])
 
 def p_expression_list_body_recursive(p):
     '''list-body : expression LIST_ITEM_SEPARATOR list-body'''
-    p[0] = ('list-body', p[1], p[3])
+    p[0] = ListBodyNode(p[1], p[3])
 
 def p_expression_list_body_base(p):
     '''list-body : expression'''
-    p[0] = ('list-body', p[1])
+    p[0] = ListBodyNode(p[1], None)
     
 def p_expression_true(p):
     '''expression : TRUE'''
-    p[0] = ('literal-expression', True)
+    p[0] = LiteralExpressionNode(True)
 
 def p_expression_false(p):
     '''expression : FALSE'''
-    p[0] = ('literal-expression', False)
+    p[0] = LiteralExpressionNode(False)
     
 def p_expression_variable(p):
     '''expression : NAME'''
-    p[0] = ('variable-expression',p[1])
+    p[0] = VariableExpressionNode(p[1])
+
+# -------- Statements -------- #
 
 def p_statement_recursive(p):
     'statements : statement statements'
-    p[0] = ('recursive-statement', p[1], p[2])
+    p[0] = StatementsNode(p[1], p[2])
 
 def p_statement_base(p):
     'statements : empty'
-    p[0] = ('empty', )
+    p[0] = EmptyNode()
 
 def p_statement_expression(p):
     'statement : expression END_OF_STATEMENT'
-    p[0] = ('expression-statement', p[1])
+    p[0] = ExpressionStatementNode(p[1])
 
 def p_statement_if(p):
     'statement : IF expression THEN statements ELSE THEN statements END_OF_IF_THEN_ELSE END_OF_STATEMENT'
-    p[0] = ('if-statement', p[2], p[4], p[7])
+    p[0] = IfStatementNode(p[2], p[4], p[7])
 
 def p_parameters_recursive(p):
     'parameters : NAME LIST_ITEM_SEPARATOR parameters'
-    p[0] = ('parameters', p[1], p[3])
+    p[0] = ParametersNode(p[1], p[3])
 
 def p_parameters_base(p):
     '''parameters : NAME'''
-    p[0] = ('parameters', p[1])
+    p[0] = ParametersNode(p[1], None)
 
 def p_empty(p):
     'empty :'
-    p[0] = None
+    p[0] = EmptyNode()
 
 '''
 ----------------- functions start ----------------- 
 '''
 def p_function_expression(p):
     'expression : FUNCTION WITH_PARAMS parameters START_OF_FUNCTION statements END_OF_FUNCTION'
-    p[0] = ('function-expression', p[3], p[5])
+    p[0] = FunctionExpressionNode(p[3], p[5])
 
 def p_function_expression_no_params(p):
     'expression : FUNCTION START_OF_FUNCTION statements END_OF_FUNCTION'
-    p[0] = ('function-expression', p[3])
+    p[0] = FunctionExpressionNode(None, p[3])
 
 def p_function_application(p):
     'expression : RUN NAME WITH list-body END_OF_LIST'
-    p[0] = ('function-application-expression', p[2], p[4])
+    p[0] = FunctionApplicationExpression(p[2], p[4])
 
 def p_function_application_no_args(p):
     'expression : RUN NAME'
-    p[0] = ('function-application-expression', p[2])
+    p[0] = FunctionApplicationExpression(p[2], None)
 
 def p_import_function_application(p):
     'expression : RUN NAME IMPORT_FUNCTION_SEPARATOR NAME WITH list-body END_OF_LIST'
-    p[0] = ('function-import-application-expression', p[2], p[4], p[6])
+    p[0] = ImportedFunctionApplicationExpressionNode(p[2], p[4], p[6])
     
 def p_import_function_application_no_args(p):
     'expression : RUN NAME IMPORT_FUNCTION_SEPARATOR NAME'
-    p[0] = ('function-import-application-expression', p[2], p[4])
+    p[0] = ImportedFunctionApplicationExpressionNode(p[2], p[4], None)
 
 def p_return_statement(p):
     'statement : RETURN expression END_OF_STATEMENT'
-    p[0] = ('return-statement', p[2])
+    p[0] = ReturnStatementNode(p[2])
 
 '''
 ----------------- functions end -----------------
 '''
 def p_statement_assign(p):
     'statement : NAME EQUALS expression END_OF_STATEMENT'
-    p[0] = ('assign-statement', p[1], p[3])
+    p[0] = AssignStatementNode(p[1], p[3])
 
 def p_statement_break(p):
     'statement : BREAK END_OF_STATEMENT'
-    p[0] = ('break-statement',)
+    p[0] = BreakStatementNode()
 
 def p_statement_while(p):
     'statement : WHILE expression DO statements END_OF_WHILE END_OF_STATEMENT'
-    p[0] = ('while-statement', p[2], p[4])
+    p[0] = WhileStatementNode(p[2], p[4])
     
 def p_expression_print(p):
     'statement : PRINT expression END_OF_STATEMENT'
-    p[0] = ('print-function', p[2])
+    p[0] = PrintStatementNode(p[2], False)
     
 def p_expression_print_without_newline(p):
     'statement : PRINT_WITHOUT_NEWLINE expression END_OF_STATEMENT'
-    p[0] = ('print-without-newline-function', p[2])
+    p[0] = PrintStatementNode(p[2], True)
 
 def p_expression_push(p):
     'expression : PUSH expression IN_LIST expression END_OF_LIST'
-    p[0] = ('push-function', p[2], p[4])
+    p[0] = PushExpressionNode(p[2], p[4])
 
 def p_expression_pop(p):
     'expression : POP expression END_OF_LIST'
-    p[0] = ('pop-function', p[2])
+    p[0] = PopExpressionNode(p[2])
 
 def p_expression_array_index(p):
     'expression : ARRAY_INDEX expression IN_LIST expression END_OF_LIST'
-    p[0] = ('index-expression', p[2], p[4])
+    p[0] = ArrayIndexExpressionNode(p[2], p[4])
     
 def p_expression_change_array_index(p):
     'expression : CHANGE_ARRAY_INDEX ARRAY_INDEX expression IN_LIST expression TO expression END_OF_LIST'
-    p[0] = ('change-index-expression', p[3], p[5], p[7])
+    p[0] = ChangeArrayIndexExpressionNode(p[3], p[5], p[7])
     
 def p_expression_dict_lookup(p):
     'expression : DICT_LOOKUP expression IN_DICT expression END_OF_LIST'
-    p[0] = ('lookup-expression', p[2], p[4])
+    p[0] = DictLookupExpressionNode(p[2], p[4])
 
 def p_expression_dict_add(p):
     'expression : PUSH expression DICT_PAIR_SEPARATOR expression IN_DICT expression END_OF_LIST'
-    p[0] = ('add-expression', p[2], p[4], p[6])
+    p[0] = DictInsertExpressionNode(p[2], p[4], p[6])
 
 def p_expression_dict_remove(p):
     'expression : DICT_REMOVE expression IN_DICT expression END_OF_LIST'
-    p[0] = ('remove-expression', p[2], p[4])
+    p[0] = DictRemoveExpressionNode(p[2], p[4])
     
 def p_expression_length(p):
     'expression : LENGTH expression END_OF_LIST'
-    p[0] = ('length-function', p[2])
+    p[0] = LengthExpressionNode(p[2])
     
 # Import python's built-in functions
 def p_statement_import(p):
     'statement : IMPORT STRING AS NAME END_OF_IMPORT END_OF_STATEMENT'
-    p[0] = ('import-statement', p[2], p[4])
+    p[0] = ImportStatementNode(p[2], p[4])
 
 def p_statement_pass(p):
     'statement : PASS END_OF_STATEMENT'
-    p[0] = ('pass-statement',)
+    p[0] = PassStatementNode()
     
 def p_error(p):
     if p is not None: 
@@ -323,9 +329,6 @@ def parse(script):
     # pprint.pprint(out)
     return parser.parse(script)
 
-# from interpreter import interpret
-# interpret(out)
- 
 # import sys
 # import os
 # import io
